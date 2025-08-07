@@ -1,14 +1,15 @@
 import React from "react";
-import "./App.css";
-import Navbar from "./components/Navbar/Navbar";
-import Home from "./components/Home/Home";
+import { AuthProvider } from "./context/AuthContext";
+import { CookiesProvider } from "react-cookie";
+import Main from "./navigation/Main";
 
 function App() {
   return (
-    <>
-      <Navbar />
-      <Home />
-    </>
+    <CookiesProvider>
+      <AuthProvider>
+        <Main />
+      </AuthProvider>
+    </CookiesProvider>
   );
 }
 

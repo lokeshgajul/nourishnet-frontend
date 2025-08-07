@@ -1,11 +1,14 @@
 import React from "react";
 import homeImage from "../../assets/images/homeImage.png";
+import { ToastContainer } from "react-toastify";
+import Navbar from "../Navbar/Navbar";
 
 const Home = () => {
   return (
     <div>
-      {/* Home Page Header Section */}
-
+      <div>
+        <Navbar />
+      </div>
       <section className="flex flex-row justify-center px-6 py-12">
         <div className="flex justify-around items-center flex-col w-[600px] text-center md:text-left">
           <div className="mb-6"></div>
@@ -32,6 +35,8 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      <ToastContainer />
     </div>
   );
 };
