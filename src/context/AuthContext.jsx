@@ -22,9 +22,7 @@ export const AuthProvider = ({ children }) => {
     bio
   ) => {
     try {
-      let payload = {
-        role,
-      };
+      let payload = { role };
 
       if (role == "Donor") {
         payload = {
@@ -93,6 +91,7 @@ export const AuthProvider = ({ children }) => {
 
       const { status, user } = response.data;
       setIsAuthenticated(status);
+      console.log(isAuthenticated);
 
       if (status) {
         toast(`Hello ${user.email}`, {
