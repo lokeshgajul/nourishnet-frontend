@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import homeImage from "../../assets/images/homeImage.png";
 import { ToastContainer } from "react-toastify";
 import { BiLeaf } from "react-icons/bi";
-import FoodDonation from "../../components/Food_Donation/FoodDonationCard";
+import DonorFoodCard from "../../components/DonorFoodDonation/DonorFoodCard";
+import { Link } from "react-router-dom";
 
 const Home = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <div>
-      <section className="flex justify-center flex-row py-16  max-[1000px]:flex-col max-lg:items-center mt-14">
+      <div className="flex justify-center flex-row py-16  max-[1000px]:flex-col max-lg:items-center mt-14">
         <div className="col-span-3">
           <div className="flex justify-center flex-col pt-12  px-14">
             <h1 className="text-3xl font-medium w-[400px]">
@@ -22,12 +27,14 @@ const Home = () => {
             </p>
 
             <div className="py-4 space-x-8">
-              <button
-                className="bg-green-600 px-5 py-3 text-sm font-medium text-white rounded-full cursor-pointer"
-                type="button"
-              >
-                Donate Now
-              </button>
+              <Link to="/donate-food">
+                <button
+                  className="bg-green-600 px-5 py-3 text-sm font-medium text-white rounded-full cursor-pointer"
+                  type="button"
+                >
+                  Donate Now
+                </button>
+              </Link>
               <button
                 className=" border-slate-200 border-[1.5px] px-5 py-3 text-sm font-medium rounded-full cursor-pointer"
                 type="button"
@@ -42,7 +49,7 @@ const Home = () => {
             <img src={homeImage} alt="image" />
           </div>
         </div>
-      </section>
+      </div>
 
       <div className="bg-neutral-100 pt-6 pb-16">
         <div className="text-center p-6">
@@ -86,7 +93,7 @@ const Home = () => {
         </div>
 
         <div className="flex flex-wrap justify-center items-center gap-6 pb-16  max-md:p-8 md:px-20">
-          <FoodDonation />
+          <DonorFoodCard />
         </div>
       </div>
 

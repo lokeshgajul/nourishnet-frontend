@@ -89,11 +89,18 @@ export const AuthProvider = ({ children }) => {
         { withCredentials: true }
       );
 
-      const { status, user } = response.data;
-      setIsAuthenticated(status);
-      console.log(isAuthenticated);
+      const { valid, user } = await response.data;
+      // console.log(status);
 
-      if (status) {
+      if (response.data.valid) {
+        toast(`Hello ${user.email}`, {
+          position: "top-right",
+        });
+        setIsAuthenticated(valid);
+        console.log(isAuthenticated);
+      }
+
+      if (valid) {
         toast(`Hello ${user.email}`, {
           position: "top-right",
         });
@@ -106,7 +113,8 @@ export const AuthProvider = ({ children }) => {
         error.response?.data || error.message
       );
       setIsAuthenticated(false);
-      removeCookie("token");
+      console.log(isAuthenticated);
+      // removeCookie("token");
     }
   };
 

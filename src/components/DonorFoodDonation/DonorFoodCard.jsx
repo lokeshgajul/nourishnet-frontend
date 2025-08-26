@@ -43,7 +43,7 @@ const FoodDonationCard = () => {
 
           {/* Buttons */}
           <div className="flex justify-start items-center gap-4 px-4 pb-4 mt-auto">
-            <Link to="/request-food">
+            <Link to="/claim-food">
               <button className="bg-green-600 hover:bg-green-700 font-semibold text-white px-4 py-2 rounded-md text-md transition-all cursor-pointer">
                 Claim
               </button>
