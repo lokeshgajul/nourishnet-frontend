@@ -6,15 +6,12 @@ import { DontationContext } from "../../context/FoodDonationContext";
 
 const DonationRequest = ({ onNext }) => {
   const {
-    count,
-    preview,
     handleIncrement,
     handleDecrement,
     handleImageUpload,
-    setFoodCategory,
-    setFoodTitle,
-    foodTitle,
     getDonorDetails,
+    foodDonationForm,
+    handleFoodDonation,
   } = useContext(DontationContext);
 
   const handleDonorDetails = async () => {
@@ -46,14 +43,14 @@ const DonationRequest = ({ onNext }) => {
   ];
 
   return (
-    <div className="w-full">
-      <span className="text-xl font-bold capitalize text-gray-800 flex text-left">
+    <div className="w-full max-[250px]:px-4">
+      <span className="md:text-xl font-bold capitalize text-gray-800 flex text-left">
         Step 1: Item Details{" "}
       </span>
       <div className="flex flex-col mt-2">
         <label
           htmlFor="foodTitle"
-          className="text-gray-700 font-medium text-left"
+          className="max-md:text-sm text-gray-700 font-medium text-left"
         >
           Food Title:
         </label>
@@ -61,19 +58,19 @@ const DonationRequest = ({ onNext }) => {
           type="text"
           name="foodTitle"
           id="foodTitle"
-          value={foodTitle}
-          onChange={(e) => setFoodTitle(e.target.value)}
+          value={foodDonationForm.foodTitle}
+          onChange={(e) => handleFoodDonation("foodTitle", e.target.value)}
           placeholder="Food Title..."
           className="mt-2 border border-gray-400 rounded-md p-2 focus:ring-2 focus:ring-green-500 outline-none"
           required
         />
       </div>
 
-      <p className="mt-2 text-left text-gray-700 font-medium">
+      <p className="mt-4 max-md:text-sm text-gray-700 font-medium text-left">
         Upload Food Image
       </p>
-      <div className="flex justify-center items-center mt-3 rounded-md h-56 flex-col border-2 border-dashed border-gray-500 cursor-pointer p-3">
-        {!preview ? (
+      <div className="flex justify-center items-center mt-2 rounded-md h-56 flex-col border-2 border-dashed border-gray-500 cursor-pointer p-3">
+        {!foodDonationForm.preview ? (
           <div
             className="flex justify-center items-center flex-col h-full w-full"
             onClick={() => document.getElementById("image").click()}
@@ -86,13 +83,10 @@ const DonationRequest = ({ onNext }) => {
             <input
               accept="image/*"
               type="file"
-              name="image"
+              name="foodImage"
               id="image"
               className="hidden"
-              onChange={(e) => {
-                handleImageUpload(e);
-                e.target.value = "";
-              }}
+              onChange={handleImageUpload}
             />
           </div>
         ) : (
@@ -101,42 +95,42 @@ const DonationRequest = ({ onNext }) => {
             onClick={() => document.getElementById("image-preview").click()}
           >
             <img
-              src={preview}
+              src={foodDonationForm.preview}
               alt="Preview"
               className="max-h-40 w-auto object-cover rounded-md p-2"
             />
-            <p className="text-gray-500 text-sm mt-2 text-center">
+            <p className="mt-4 max-md:text-sm text-gray-700 font-medium text-left">
               Click image to change
             </p>
             <input
               id="image-preview"
+              name="foodImage"
               type="file"
               accept="image/*"
               className="hidden"
-              onChange={(e) => {
-                handleImageUpload(e);
-                e.target.value = ""; // reset after selecting
-              }}
+              onChange={handleImageUpload}
             />
           </div>
         )}
       </div>
 
-      <div className="flex flex-row justify-between gap-6 items-start mt-5 pb-5">
+      <div className="flex flex-row justify-between gap-3 items-start mt-5 pb-5">
         {/* Food Category */}
         <div className="flex flex-col w-full max-w-xs">
           <label
             htmlFor="foodCategory"
-            className="font-medium text-gray-700 text-left"
+            className=" max-md:text-sm text-gray-700 font-medium text-left"
           >
             Food Category:
           </label>
           <Select
-            className="mt-2"
+            className="mt-2 text-sm"
             options={options}
             labelField="name"
             valueField="id"
-            onChange={(value) => setFoodCategory(value)}
+            onChange={(value) => {
+              handleFoodDonation("foodCategory", value[0].name);
+            }}
           />
         </div>
 
@@ -144,27 +138,23 @@ const DonationRequest = ({ onNext }) => {
         <div className="flex flex-col w-full max-w-xs">
           <label
             htmlFor="quantity"
-            className="font-medium text-gray-700 text-left"
+            className=" max-md:text-sm text-gray-700 font-medium text-left"
           >
             Quantity:
           </label>
           <div className="flex items-center border border-gray-400 mt-2">
-            {/* Minus */}
             <button
               type="button"
               className="px-4 py-2 text-lg font-bold text-gray-700 hover:bg-gray-200 rounded-l-md"
               onClick={handleDecrement}
-              disabled={count <= 1}
             >
               <FaMinus />
             </button>
 
-            {/* Count */}
             <span className="flex-1 text-center text-gray-800 font-semibold">
-              {count}
+              {foodDonationForm.foodQuantity}
             </span>
 
-            {/* Plus */}
             <button
               type="button"
               className="px-4 py-2 text-lg font-bold text-gray-700 hover:bg-gray-200 rounded-r-md"
@@ -177,20 +167,26 @@ const DonationRequest = ({ onNext }) => {
       </div>
 
       <div className="flex flex-col">
-        <label htmlFor="Detail" className="font-medium text-gray-700 text-left">
+        <label
+          htmlFor="Detail"
+          className=" max-md:text-sm text-gray-700 font-medium text-left"
+        >
           Detailed Description:{" "}
         </label>
         <textarea
           className="border border-gray-500 rounded-md mt-2 w-full h-32 p-2"
           name="foodDetail"
+          value={foodDonationForm.foodDescription}
+          onChange={(e) =>
+            handleFoodDonation("foodDescription", e.target.value)
+          }
           placeholder="e.g., Homemade lasagna, fresh ingredients, prepared this morning. Serves 4-6 people."
           id="foodDetail"
         />
-
         <div className="py-5">
           <button
             onClick={handleDonorDetails}
-            className="bg-green-600 hover:bg-green-700 p-1.5 rounded-sm font-medium tracking-wide cursor-pointer text-white w-full transition duration-200"
+            className="bg-green-600 hover:bg-green-700 p-1.5 max-md:text-sm rounded-sm font-medium tracking-wide cursor-pointer text-white w-full transition duration-200"
             type="submit"
           >
             Next

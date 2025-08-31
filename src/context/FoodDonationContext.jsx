@@ -4,23 +4,44 @@ import React, { createContext, useState } from "react";
 export const DontationContext = createContext();
 
 export const FoodDonationProvider = ({ children }) => {
-  const [count, setCount] = useState(1);
-  const [preview, setPreview] = useState(null);
-  const [foodTitle, setFoodTitle] = useState("");
-  const [foodCategory, setFoodCategory] = useState("");
-  const [donorData, setDonorData] = useState("");
+  const [foodDonationForm, setFoodDonationForm] = useState({
+    foodTitle: "",
+    imageFile: null,
+    foodCategory: "",
+    foodQuantity: 1,
+    foodDescription: "",
+    preview: null,
+  });
+  const [donorContactForm, setDonorContactForm] = useState();
+
+  const handleFoodDonation = (field, value) => {
+    setFoodDonationForm((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
 
   const handleIncrement = () => {
-    setCount(count + 1);
+    setFoodDonationForm((prev) => ({
+      ...prev,
+      foodQuantity: prev.foodQuantity + 1,
+    }));
   };
   const handleDecrement = () => {
-    setCount(count - 1);
+    setFoodDonationForm((prev) => ({
+      ...prev,
+      foodQuantity: prev.foodQuantity > 1 ? prev.foodQuantity - 1 : 1,
+    }));
   };
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setPreview(URL.createObjectURL(file));
+      setFoodDonationForm((prev) => ({
+        ...prev,
+        imageFile: file,
+        preview: URL.createObjectURL(file),
+      }));
     }
   };
 
@@ -33,7 +54,7 @@ export const FoodDonationProvider = ({ children }) => {
         }
       );
 
-      setDonorData(response.data);
+      setDonorContactForm(response.data);
       console.log(response.data);
     } catch (error) {
       console.log(error);
@@ -41,16 +62,13 @@ export const FoodDonationProvider = ({ children }) => {
   };
 
   const value = {
-    count,
-    preview,
     handleIncrement,
     handleDecrement,
-    handleImageUpload,
-    setFoodCategory,
-    setFoodTitle,
-    foodTitle,
     getDonorDetails,
-    donorData,
+    handleImageUpload,
+    donorContactForm,
+    foodDonationForm,
+    handleFoodDonation,
   };
 
   return (

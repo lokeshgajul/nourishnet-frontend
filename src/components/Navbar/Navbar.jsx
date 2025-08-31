@@ -1,11 +1,29 @@
 import axios from "axios";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { MdMenu, MdClose } from "react-icons/md";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const { verfiyCookie, isAuthenticated } = useContext(AuthContext);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const links = ["Donors", "Volunteers", "NGO's", "About", "Contact"];
+
+  const AuthButton = () =>
+    isAuthenticated ? (
+      <span
+        onClick={handleLogout}
+        className="bg-green-600 p-2 rounded-md text-sm text-white cursor-pointer hover:bg-green-700"
+      >
+        LogOut
+      </span>
+    ) : (
+      <span className="p-1.5 border rounded-md text-sm font-normal border-gray-300 cursor-pointer">
+        Sign Up
+      </span>
+    );
 
   const logout = async () => {
     try {
@@ -32,34 +50,55 @@ const Navbar = () => {
 
   return (
     <div className="fixed top-0 left-0 w-full z-50 shadow-md bg-white">
-      <div className=" flex flex-row justify-between items-center w-full gap-3 py-6 px-4 border border-b-[1px] border-gray-300">
-        <div>
-          <h2 className="font-semibold text-xl capitalize italic">
-            NourishNet
-          </h2>
-        </div>
-        <ul className="flex flex-row justify-center items-center gap-3">
-          <li className="cursor-pointer space-x-1">Donors</li>
-          <li className="cursor-pointer space-x-1">Volunteers</li>
-          <li className="cursor-pointer space-x-1">NGO's</li>
-          <li className="cursor-pointer space-x-1">About</li>
-          <li className="cursor-pointer space-x-1">Contact</li>
+      <div className="flex justify-between items-center py-4 md:py-6 px-4 border-gray-300">
+        <h2 className="font-bold md:text-[22px]  capitalize italic">
+          NourishNet
+        </h2>
+
+        <ul className="hidden md:flex gap-3">
+          {links.map((link) => (
+            <li key={link} className="cursor-pointer">
+              {link}
+            </li>
+          ))}
         </ul>
 
-        <div className="space-x-2.5">
-          {isAuthenticated ? (
-            <span
-              onClick={handleLogout}
-              className="bg-green-600 p-2 rounded-md text-sm text-white cursor-pointer hover:bg-green-600"
-            >
-              LogOut
-            </span>
+        <div className="hidden md:flex">
+          <AuthButton />
+        </div>
+
+        <div className="md:hidden">
+          {menuOpen ? (
+            <MdClose
+              size={28}
+              onClick={() => setMenuOpen(false)}
+              className="cursor-pointer"
+            />
           ) : (
-            <span className="p-1.5 border-[1px] rounded-md text-sm font-normal border-gray-300 cursor-pointer ">
-              Sign Up
-            </span>
+            <MdMenu
+              size={28}
+              onClick={() => setMenuOpen(true)}
+              className="cursor-pointer"
+            />
           )}
         </div>
+      </div>
+
+      <div
+        className={`md:hidden bg-white shadow-md border-t border-gray-200 transition-all duration-500 ease-in-out overflow-hidden ${
+          menuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <ul className="flex flex-col items-end gap-3 p-4  text-center">
+          {links.map((link) => (
+            <li key={link} className="cursor-pointer w-full">
+              {link}
+            </li>
+          ))}
+          <div className="w-full flex justify-center">
+            <AuthButton />
+          </div>
+        </ul>
       </div>
     </div>
   );

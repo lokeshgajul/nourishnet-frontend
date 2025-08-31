@@ -66,7 +66,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-all duration-300 transform hover:scale-105 active:scale-95"
+            className="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer"
           >
             <span className="relative">Login</span>
           </button>

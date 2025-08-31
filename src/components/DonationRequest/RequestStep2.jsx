@@ -1,19 +1,44 @@
 import React, { useState } from "react";
 import { useContext } from "react";
 import { DontationContext } from "../../context/FoodDonationContext";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 const RequestStep2 = () => {
-  const { donorData } = useContext(DontationContext);
+  const { donorContactForm, foodDonationForm } = useContext(DontationContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    donorName: donorData.donorName,
-    phone: donorData.phone,
-    email: donorData.email,
-  });
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Donation Submitted:", formData);
+    setIsSubmitting(true);
+    const formData = new FormData();
+    formData.append("donorId", donorContactForm._id);
+    formData.append("foodTitle", foodDonationForm.foodTitle);
+    formData.append("foodImage", foodDonationForm.imageFile);
+    formData.append("foodCategory", foodDonationForm.foodCategory);
+    formData.append("foodQuantity", foodDonationForm.foodQuantity);
+    formData.append("foodDescription", foodDonationForm.foodDescription);
+    formData.append("donorName", donorContactForm.donorName);
+    formData.append("donorPhone", donorContactForm.phone);
+    formData.append("donorAddress", donorContactForm.address);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/getDonationRequest",
+        formData,
+        {
+          headers: "multipart/form-data",
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log("Error ", error.message);
+    } finally {
+      setIsSubmitting(false);
+      navigate("/");
+    }
   };
 
   return (
@@ -44,7 +69,7 @@ const RequestStep2 = () => {
           name="donorName"
           id="donorName"
           readOnly
-          value={formData.donorName}
+          value={donorContactForm.donorName}
           placeholder="Enter your name"
           className="mt-2 border border-gray-400 rounded-md p-2 focus:ring-2 focus:ring-green-500 outline-none"
           required
@@ -61,7 +86,7 @@ const RequestStep2 = () => {
           name="phone"
           id="phone"
           readOnly
-          value={formData.phone}
+          value={donorContactForm.phone}
           placeholder="Enter your phone number"
           className="mt-2 border border-gray-400 rounded-md p-2 focus:ring-2 focus:ring-green-500 outline-none"
           required
@@ -78,7 +103,7 @@ const RequestStep2 = () => {
           name="email"
           id="email"
           readOnly
-          value={formData.email}
+          value={donorContactForm.email}
           placeholder="Enter your email"
           className="mt-2 border border-gray-400 rounded-md p-2 focus:ring-2 focus:ring-green-500 outline-none"
           required
@@ -87,9 +112,10 @@ const RequestStep2 = () => {
 
       <button
         type="submit"
-        className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-md transition duration-200"
+        disabled={isSubmitting}
+        className="w-full mt-3 bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-md transition duration-200"
       >
-        Submit Donation
+        {isSubmitting ? "Submitting..." : "Submit Donation"}
       </button>
     </form>
   );
