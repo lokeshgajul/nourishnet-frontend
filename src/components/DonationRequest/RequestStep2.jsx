@@ -5,7 +5,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 const RequestStep2 = () => {
-  const { donorContactForm, foodDonationForm } = useContext(DontationContext);
+  const { donorData, foodDonationForm } = useContext(DontationContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
@@ -13,19 +13,19 @@ const RequestStep2 = () => {
     e.preventDefault();
     setIsSubmitting(true);
     const formData = new FormData();
-    formData.append("donorId", donorContactForm._id);
+    formData.append("donorId", donorData._id);
     formData.append("foodTitle", foodDonationForm.foodTitle);
     formData.append("foodImage", foodDonationForm.imageFile);
     formData.append("foodCategory", foodDonationForm.foodCategory);
     formData.append("foodQuantity", foodDonationForm.foodQuantity);
     formData.append("foodDescription", foodDonationForm.foodDescription);
-    formData.append("donorName", donorContactForm.donorName);
-    formData.append("donorPhone", donorContactForm.phone);
-    formData.append("donorAddress", donorContactForm.address);
+    formData.append("donorName", donorData.donorName);
+    formData.append("donorPhone", donorData.phone);
+    formData.append("donorAddress", donorData.address);
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/getDonationRequest",
+        "http://localhost:3000/donations/donor/createDonationRequest",
         formData,
         {
           headers: "multipart/form-data",
@@ -69,7 +69,7 @@ const RequestStep2 = () => {
           name="donorName"
           id="donorName"
           readOnly
-          value={donorContactForm.donorName}
+          value={donorData.donorName}
           placeholder="Enter your name"
           className="mt-2 border border-gray-400 rounded-md p-2 focus:ring-2 focus:ring-green-500 outline-none"
           required
@@ -86,7 +86,7 @@ const RequestStep2 = () => {
           name="phone"
           id="phone"
           readOnly
-          value={donorContactForm.phone}
+          value={donorData.phone}
           placeholder="Enter your phone number"
           className="mt-2 border border-gray-400 rounded-md p-2 focus:ring-2 focus:ring-green-500 outline-none"
           required
@@ -103,7 +103,7 @@ const RequestStep2 = () => {
           name="email"
           id="email"
           readOnly
-          value={donorContactForm.email}
+          value={donorData.email}
           placeholder="Enter your email"
           className="mt-2 border border-gray-400 rounded-md p-2 focus:ring-2 focus:ring-green-500 outline-none"
           required

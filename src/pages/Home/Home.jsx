@@ -1,18 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import homeImage from "../../assets/images/homeImage.png";
 import { ToastContainer } from "react-toastify";
 import { BiLeaf } from "react-icons/bi";
-import DonorFoodCard from "../../components/FoodCard/FoodCard";
 import { Link } from "react-router-dom";
+import { DontationContext } from "../../context/FoodDonationContext";
+import { Suspense, lazy } from "react";
 
+const FoodDonationCard = lazy(() =>
+  import("../../components/FoodCard/FoodCard")
+);
 const Home = () => {
+  const { donorData, getDonorDetails, loading } = useContext(DontationContext);
+
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+    if (!donorData) {
+      getDonorDetails();
+    }
+  }, [donorData, getDonorDetails]);
+
+  if (loading) {
+    return <p>Loading recent donations...</p>;
+  }
 
   return (
     <div>
-      <div className="flex justify-center flex-row py-14 md:py-28 max-[1000px]:flex-col max-lg:items-center">
+      <div className="flex justify-center flex-row pt-24 md:pt-28 max-[1000px]:flex-col max-lg:items-center">
         <div className="col-span-3">
           <div className="flex justify-center max-lg:items-center flex-col px-7 pt-3 lg:px-14 lg:w-[600px]">
             <h1 className="max-lg:text-xl lg:text-3xl font-medium lg:pt-9">
@@ -51,7 +63,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="bg-neutral-100 pt-3 py-16 pb-16">
+      <div className="bg-neutral-100 pt-3 py-10 pb-16">
         <div className="md:text-center md:py-10 px-8 py-4 max-md:py-6">
           <span className="max-lg:text-xl lg:text-3xl font-medium">
             How NoriushNet Works
@@ -86,14 +98,16 @@ const Home = () => {
       </div>
 
       <div>
-        <div className="md:text-center md:py-10 px-8 max-md:pt-4 pb-4">
+        <div className="md:text-center md:py-10 px-8 max-md:pt-6 pb-6">
           <span className="max-lg:text-xl lg:text-3xl font-medium leading-normal">
             Recent Food Donations
           </span>
         </div>
 
-        <div className="flex flex-wrap justify-center items-center gap-6 pb-5 md:px-20">
-          <DonorFoodCard />
+        <div className="flex flex-wrap justify-start items-center gap-6 pb-5 md:pb-16 md:px-20">
+          <Suspense fallback={<p>Loading food donations...</p>}>
+            <FoodDonationCard />
+          </Suspense>
         </div>
       </div>
 

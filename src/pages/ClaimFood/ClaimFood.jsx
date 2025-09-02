@@ -100,7 +100,7 @@ const RequestFood = () => {
               id="pickup"
               name="pickup"
               placeholder="Select a Time Slop"
-              className="w-full border border-gray-300 rounded-md px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
             />
           </div>
 

@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { createContext, useState } from "react";
+import { useEffect } from "react";
 
 export const DontationContext = createContext();
 
@@ -12,7 +13,8 @@ export const FoodDonationProvider = ({ children }) => {
     foodDescription: "",
     preview: null,
   });
-  const [donorContactForm, setDonorContactForm] = useState();
+  const [donorData, setdonorData] = useState();
+  const [loading, setLoading] = useState(false);
 
   const handleFoodDonation = (field, value) => {
     setFoodDonationForm((prev) => ({
@@ -47,15 +49,20 @@ export const FoodDonationProvider = ({ children }) => {
 
   const getDonorDetails = async () => {
     try {
+      if (donorData) return donorData;
+
+      setLoading(true);
       const response = await axios.get(
-        "http://localhost:3000/getDonorDetails",
+        "http://localhost:3000/donations/donor/getDonorDetails",
         {
           withCredentials: true,
         }
       );
 
-      setDonorContactForm(response.data);
-      console.log(response.data);
+      const data = await response.data;
+      setdonorData(data);
+      setLoading(false);
+      console.log("donor details ", data);
     } catch (error) {
       console.log(error);
     }
@@ -66,9 +73,10 @@ export const FoodDonationProvider = ({ children }) => {
     handleDecrement,
     getDonorDetails,
     handleImageUpload,
-    donorContactForm,
+    donorData,
     foodDonationForm,
     handleFoodDonation,
+    loading,
   };
 
   return (

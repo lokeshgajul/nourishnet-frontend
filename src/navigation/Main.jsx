@@ -8,6 +8,7 @@ import { Footer } from "../components/Footer/Footer";
 import Navbar from "../components/Navbar/Navbar";
 import ClaimFoodRequest from "../pages/ClaimFood/ClaimFood";
 import DonateFood from "../pages/DonateFood/DonateFood";
+import DonationDetails from "../pages/DonationDetails/DonationDetails";
 
 const Main = () => {
   const { isAuthenticated, verfiyCookie } = useContext(AuthContext);
@@ -32,6 +33,7 @@ const Main = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/claim-food" element={<ClaimFoodRequest />} />
                 <Route path="/donate-food" element={<DonateFood />} />
+                <Route path="/donation/:id" element={<DonationDetails />} />
               </>
             ) : (
               <>

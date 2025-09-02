@@ -90,8 +90,6 @@ export const AuthProvider = ({ children }) => {
       );
 
       const { valid, user } = await response.data;
-      // console.log(status);
-
       if (response.data.valid) {
         toast(`Hello ${user.email}`, {
           position: "top-right",

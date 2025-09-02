@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { MdMenu, MdClose } from "react-icons/md";
+import { FaUser } from "react-icons/fa";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -13,14 +14,19 @@ const Navbar = () => {
 
   const AuthButton = () =>
     isAuthenticated ? (
-      <span
-        onClick={handleLogout}
-        className="bg-green-600 p-2 rounded-md text-sm text-white cursor-pointer hover:bg-green-700"
-      >
-        LogOut
-      </span>
+      <>
+        <span
+          onClick={handleLogout}
+          className="bg-green-600 p-2 rounded-md text-sm text-white cursor-pointer hover:bg-green-700"
+        >
+          LogOut
+        </span>
+        <span className="bg-neutral-100 rounded-full p-3 cursor-pointer">
+          <FaUser />
+        </span>
+      </>
     ) : (
-      <span className="p-1.5 border rounded-md text-sm font-normal border-gray-300 cursor-pointer">
+      <span className="p-1.5 border rounded-md text-sm font-normal border-gray-300 cursor-pointer ">
         Sign Up
       </span>
     );
@@ -50,8 +56,8 @@ const Navbar = () => {
 
   return (
     <div className="fixed top-0 left-0 w-full z-50 shadow-md bg-white">
-      <div className="flex justify-between items-center py-4 md:py-6 px-4 border-gray-300">
-        <h2 className="font-bold md:text-[22px]  capitalize italic">
+      <div className="flex justify-between items-center py-3 md:py-4 px-4 border-gray-300">
+        <h2 className="font-bold md:text-[20px]  capitalize italic">
           NourishNet
         </h2>
 
@@ -63,7 +69,7 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <div className="hidden md:flex">
+        <div className="hidden md:flex justify-center items-center space-x-3.5">
           <AuthButton />
         </div>
 
