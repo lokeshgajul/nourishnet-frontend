@@ -3,15 +3,17 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Register from "../auth/Register/Register";
 import Login from "../auth/Login/Login";
 import Home from "../pages/Home/Home";
+import LandingPage from "../pages/LandingPage/LandingPage";
 import { AuthContext } from "../context/AuthContext";
 import { Footer } from "../components/Footer/Footer";
 import Navbar from "../components/Navbar/Navbar";
 import ClaimFoodRequest from "../pages/ClaimFood/ClaimFood";
 import DonateFood from "../pages/DonateFood/DonateFood";
 import DonationDetails from "../pages/DonationDetails/DonationDetails";
+import Ngo from "../pages/Ngo/Home/Home";
 
 const Main = () => {
-  const { isAuthenticated, verfiyCookie } = useContext(AuthContext);
+  const { isAuthenticated, verfiyCookie, checkRole } = useContext(AuthContext);
 
   useEffect(() => {
     verfiyCookie();
@@ -30,14 +32,18 @@ const Main = () => {
           <Routes>
             {isAuthenticated ? (
               <>
-                <Route path="/" element={<Home />} />
-                <Route path="/claim-food" element={<ClaimFoodRequest />} />
+                <Route
+                  path="/"
+                  element={checkRole === "Donor" ? <Home /> : <Ngo />}
+                />
+                <Route path="/claim-food/:id" element={<ClaimFoodRequest />} />
                 <Route path="/donate-food" element={<DonateFood />} />
                 <Route path="/donation/:id" element={<DonationDetails />} />
               </>
             ) : (
               <>
-                <Route path="/" element={<Login />} />
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
               </>
             )}

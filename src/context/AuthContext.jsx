@@ -7,10 +7,11 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState();
+  const [checkRole, setCheckRole] = useState();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [cookies, removeCookie] = useCookies([]);
-  const [role, setRole] = useState("Donor");
+  const [user, setUser] = useState(null);
+  const [role, setRole] = useState(null);
 
   const Register = async (
     role,
@@ -52,6 +53,7 @@ export const AuthProvider = ({ children }) => {
       );
       const data = response.data;
       setUser(data);
+      setRole(data.role);
       setLoading(false);
     } catch (error) {
       console.log("API error:", error);
@@ -59,13 +61,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const Login = async (email, password) => {
-    console.log("Login attempt:", { role, email, password });
+    console.log("Login attempt:", { email, password });
     try {
       setLoading(true);
       const response = await axios.post(
         "http://localhost:3000/login_user",
         {
-          role,
           email,
           password,
         },
@@ -95,13 +96,8 @@ export const AuthProvider = ({ children }) => {
           position: "top-right",
         });
         setIsAuthenticated(valid);
+        setCheckRole(user.role);
         console.log(isAuthenticated);
-      }
-
-      if (valid) {
-        toast(`Hello ${user.email}`, {
-          position: "top-right",
-        });
       } else {
         removeCookie("token");
       }
@@ -123,8 +119,10 @@ export const AuthProvider = ({ children }) => {
     user,
     verfiyCookie,
     isAuthenticated,
+    setIsAuthenticated,
     role,
     setRole,
+    checkRole,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

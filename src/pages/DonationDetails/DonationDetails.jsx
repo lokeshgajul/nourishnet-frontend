@@ -2,12 +2,30 @@ import React from "react";
 import image from "../../assets/images/image.png";
 import foodImage from "../../assets/images/food.png";
 import { Link, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useContext } from "react";
+import { DontationContext } from "../../context/FoodDonationContext";
+import { useState } from "react";
 
 function DonationDetails() {
   const { id } = useParams();
   const decodedId = atob(id);
+  const { getDonationsDetails, donorData } = useContext(DontationContext);
+  const [details, setDetails] = useState();
 
-  // console.log("id ", decodedId);
+  const handleDonationDetails = async () => {
+    try {
+      const data = await getDonationsDetails(decodedId);
+      if (data) {
+        setDetails(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    handleDonationDetails();
+  }, [decodedId]);
 
   return (
     <>
@@ -75,11 +93,11 @@ function DonationDetails() {
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <p class="text-sm text-gray-500">Food Category</p>
-                <p class="font-medium">Vegetable</p>
+                <p class="font-medium">{details?.foodCategory}</p>
               </div>
               <div>
                 <p class="text-sm text-gray-500">Total Items</p>
-                <p class="font-medium">2</p>
+                <p class="font-medium">{details?.foodQuantity}</p>
               </div>
             </div>
 
@@ -89,8 +107,8 @@ function DonationDetails() {
               <p class="text-sm text-gray-500">Visual Reference</p>
               <div class="mt-2 w-full overflow-hidden rounded-md">
                 <img
-                  class="h-auto w-full object-cover"
-                  src={foodImage}
+                  class="h-96 w-full object-conatin"
+                  src={details?.foodImage || foodImage}
                   alt="Food donation"
                 />
               </div>
@@ -104,7 +122,7 @@ function DonationDetails() {
             <div class="flex flex-col gap-4">
               <div>
                 <p class="text-sm text-gray-500">Name</p>
-                <p class="font-medium">Lokesh Gajul</p>
+                <p class="font-medium">{details?.donorName}</p>
               </div>
               <div>
                 <p class="text-sm text-gray-500">Donor Type</p>
@@ -112,7 +130,7 @@ function DonationDetails() {
               </div>
               <div>
                 <p class="text-sm text-gray-500">Address</p>
-                <p class="font-medium">Vikhroli, Mumbai</p>
+                <p class="font-medium">{details?.donorAddress}</p>
               </div>
             </div>
           </div>
@@ -123,20 +141,26 @@ function DonationDetails() {
               <div>
                 <p class="text-sm text-gray-500">Contact Donor</p>
                 <p class="font-medium">lokeshg@gmail.com</p>
-                <p class="font-medium">+91 9321531486</p>
+                <p class="font-medium">+91 {details?.donorPhone}</p>
               </div>
-              <div>
-                <p class="text-sm text-gray-500">Pickup Details</p>
-                <p class="cursor-pointer font-medium text-blue-600 hover:underline">
-                  View on map
-                </p>
-              </div>
-              <div>
-                <p class="text-sm text-gray-500">Accept Donation</p>
-                <button class="mt-2 w-full rounded-md bg-green-500 px-4 py-2 font-semibold text-white transition-colors hover:bg-green-600">
-                  <Link to="/claim-food">Confirm Pickup</Link>
-                </button>
-              </div>
+
+              {details?.donorId ? (
+                <div>
+                  <p class="text-sm mt-2 text-gray-500">Accept Donation</p>
+                  <button class="mt-2 w-full rounded-md bg-red-500 px-4 py-2 font-semibold text-white transition-colors hover:bg-green-600">
+                    <Link to="/claim-food">Delete Donation</Link>
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <p class="text-sm mt-2 text-gray-500">Accept Donation</p>
+                  <button class="mt-2 w-full rounded-md bg-green-500 px-4 py-2 font-semibold text-white transition-colors hover:bg-green-600">
+                    <Link to={`/claim-food/${btoa(decodedId)}`}>
+                      Confirm Pickup
+                    </Link>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

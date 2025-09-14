@@ -25,7 +25,7 @@ const RequestStep2 = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/donations/donor/createDonationRequest",
+        "http://localhost:3000/donor/donations",
         formData,
         {
           headers: "multipart/form-data",

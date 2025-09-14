@@ -1,6 +1,5 @@
 import axios from "axios";
-import React, { createContext, useState } from "react";
-import { useEffect } from "react";
+import React, { createContext, useCallback, useState } from "react";
 
 export const DontationContext = createContext();
 
@@ -15,6 +14,7 @@ export const FoodDonationProvider = ({ children }) => {
   });
   const [donorData, setdonorData] = useState();
   const [loading, setLoading] = useState(false);
+  const [donationData, setDonationData] = useState([]);
 
   const handleFoodDonation = (field, value) => {
     setFoodDonationForm((prev) => ({
@@ -47,22 +47,45 @@ export const FoodDonationProvider = ({ children }) => {
     }
   };
 
-  const getDonorDetails = async () => {
+  const getDonorDetails = useCallback(async () => {
     try {
       if (donorData) return donorData;
 
       setLoading(true);
-      const response = await axios.get(
-        "http://localhost:3000/donations/donor/getDonorDetails",
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get("http://localhost:3000/donor/details", {
+        withCredentials: true,
+      });
 
       const data = await response.data;
       setdonorData(data);
       setLoading(false);
       console.log("donor details ", data);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [donorData]);
+
+  const getRecentDoantions = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/donor/donations/${donorData._id}`
+      );
+
+      const data = response.data;
+      console.log(data);
+      setDonationData(data.donor_donations);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getDonationsDetails = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:3000/donation/${id}`);
+
+      const data = response.data;
+      console.log("details ", data);
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -73,10 +96,13 @@ export const FoodDonationProvider = ({ children }) => {
     handleDecrement,
     getDonorDetails,
     handleImageUpload,
-    donorData,
     foodDonationForm,
     handleFoodDonation,
     loading,
+    donorData,
+    donationData,
+    getDonationsDetails,
+    getRecentDoantions,
   };
 
   return (

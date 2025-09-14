@@ -7,7 +7,8 @@ import { FaUser } from "react-icons/fa";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { verfiyCookie, isAuthenticated } = useContext(AuthContext);
+  const { verfiyCookie, isAuthenticated, setIsAuthenticated } =
+    useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const links = ["Donors", "Volunteers", "NGO's", "About", "Contact"];
@@ -16,7 +17,10 @@ const Navbar = () => {
     isAuthenticated ? (
       <>
         <span
-          onClick={handleLogout}
+          onClick={async () => {
+            await handleLogout();
+            navigate("/");
+          }}
           className="bg-green-600 p-2 rounded-md text-sm text-white cursor-pointer hover:bg-green-700"
         >
           LogOut
@@ -40,6 +44,9 @@ const Navbar = () => {
       );
       localStorage.removeItem("status");
       const { status } = await res.data;
+      setIsAuthenticated(false);
+      console.log(status);
+
       return status;
     } catch (error) {
       console.error("Logout error:", error);
@@ -48,9 +55,9 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     const result = await logout();
+    navigate("/");
     if (result === false) {
       await verfiyCookie();
-      navigate("/");
     }
   };
 

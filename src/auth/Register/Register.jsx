@@ -18,7 +18,7 @@ function Register() {
     e.preventDefault();
     try {
       await Register(role, fullName, email, phone, address, password, bio);
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       console.log(error);
     }
@@ -197,7 +197,7 @@ function Register() {
           <p className="text-sm text-gray-600">
             Already have an account?{" "}
             <Link
-              to="/"
+              to="/login"
               className="text-green-600 hover:text-green-700 font-semibold transition-colors"
             >
               Login

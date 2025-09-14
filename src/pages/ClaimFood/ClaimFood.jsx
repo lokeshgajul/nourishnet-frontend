@@ -1,9 +1,55 @@
-import React, { useEffect } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useContext } from "react";
+import { DontationContext } from "../../context/FoodDonationContext";
+import { useParams } from "react-router-dom";
+import Datetime from "react-datetime";
+import "react-datetime/css/react-datetime.css";
 
 const RequestFood = () => {
+  const [details, setDetails] = useState();
+  const [donorDetails, setDonorDetails] = useState();
+  const { getDonationsDetails } = useContext(DontationContext);
+  const [time, setTime] = useState();
+  const { id } = useParams();
+  const decodedId = atob(id);
+  const getNgoDetails = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/ngo/details/`, {
+        withCredentials: true,
+      });
+
+      const data = response.data;
+      console.log("details ", data);
+      setDetails(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDonationDetails = async () => {
+    try {
+      const data = await getDonationsDetails(decodedId);
+      if (data) {
+        setDonorDetails(data);
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    handleDonationDetails();
+  }, [decodedId]);
+
+  useEffect(() => {
+    getNgoDetails();
+  }, []);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
   return (
     <div className="max-md:mt-16 mt-28 px-4">
       <h1 className="text-center font-semibold text-xl md:text-3xl">
@@ -29,23 +75,8 @@ const RequestFood = () => {
               type="text"
               id="ngoName"
               name="ngoName"
+              value={details?.ngoName}
               placeholder="Enter NGO Name"
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-            />
-          </div>
-
-          <div className="w-full md:w-[48%]">
-            <label
-              htmlFor="contactPerson"
-              className="block mb-1 max-md:text-sm font-medium text-gray-700"
-            >
-              Contact Person
-            </label>
-            <input
-              type="text"
-              id="contactPerson"
-              name="contactPerson"
-              placeholder="Person Name"
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
             />
           </div>
@@ -61,6 +92,7 @@ const RequestFood = () => {
               type="tel"
               id="contactNumber"
               name="contactNumber"
+              value={details?.phone}
               placeholder="eg. 987664323"
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
             />
@@ -77,6 +109,7 @@ const RequestFood = () => {
               type="email"
               id="email"
               name="email"
+              value={details?.email}
               placeholder="Enter Email Address"
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
             />
@@ -95,12 +128,18 @@ const RequestFood = () => {
             >
               Preferred Pickup Time
             </label>
-            <input
-              type="text"
-              id="pickup"
-              name="pickup"
-              placeholder="Select a Time Slop"
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+            <Datetime
+              value={time} // default value
+              dateFormat={false} // hide date, show only time
+              timeFormat="hh:mm A" // 12-hour format with AM/PM
+              onChange={(val) => setTime(val)}
+              inputProps={{
+                id: "pickup",
+                name: "pickup",
+                placeholder: "Select a Time Slot",
+                className:
+                  "w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500",
+              }}
             />
           </div>
 
@@ -109,13 +148,30 @@ const RequestFood = () => {
               htmlFor="contactPerson"
               className="block mb-1 max-md:text-sm font-medium text-gray-700"
             >
-              Donor
+              Donor Name
             </label>
             <input
               type="text"
               id="Donor"
               name="Donor"
+              value={donorDetails?.donorName}
               placeholder="Donor"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+            />
+          </div>
+          <div className="w-full md:w-[48%]">
+            <label
+              htmlFor="contactPerson"
+              className="block mb-1 max-md:text-sm font-medium text-gray-700"
+            >
+              Donor Contact
+            </label>
+            <input
+              type="text"
+              id="contactPerson"
+              name="contactPerson"
+              value={donorDetails?.donorPhone}
+              placeholder="Person Name"
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
             />
           </div>
