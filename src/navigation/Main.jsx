@@ -11,9 +11,11 @@ import ClaimFoodRequest from "../pages/ClaimFood/ClaimFood";
 import DonateFood from "../pages/DonateFood/DonateFood";
 import DonationDetails from "../pages/DonationDetails/DonationDetails";
 import Ngo from "../pages/Ngo/Home/Home";
+import Loader from "../components/LoadingSkeleton/Main";
 
 const Main = () => {
-  const { isAuthenticated, verfiyCookie, checkRole } = useContext(AuthContext);
+  const { isAuthenticated, verfiyCookie, checkRole, loading } =
+    useContext(AuthContext);
 
   useEffect(() => {
     verfiyCookie();
@@ -31,15 +33,23 @@ const Main = () => {
         <div className="flex-grow">
           <Routes>
             {isAuthenticated ? (
-              <>
-                <Route
-                  path="/"
-                  element={checkRole === "Donor" ? <Home /> : <Ngo />}
-                />
-                <Route path="/claim-food/:id" element={<ClaimFoodRequest />} />
-                <Route path="/donate-food" element={<DonateFood />} />
-                <Route path="/donation/:id" element={<DonationDetails />} />
-              </>
+              loading ? (
+                <Loader />
+              ) : (
+                <>
+                  <Route
+                    path="/"
+                    element={checkRole === "Donor" ? <Home /> : <Ngo />}
+                  />
+                  <Route
+                    path="/claim-food/:id"
+                    element={<ClaimFoodRequest />}
+                  />
+                  <Route path="/donate-food" element={<DonateFood />} />
+                  <Route path="/loading" element={<Loader />} />
+                  <Route path="/donation/:id" element={<DonationDetails />} />
+                </>
+              )
             ) : (
               <>
                 <Route path="/" element={<LandingPage />} />

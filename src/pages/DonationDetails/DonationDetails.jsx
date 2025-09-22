@@ -1,17 +1,23 @@
 import React from "react";
 import image from "../../assets/images/image.png";
 import foodImage from "../../assets/images/food.png";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { DontationContext } from "../../context/FoodDonationContext";
 import { useState } from "react";
+import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
 
 function DonationDetails() {
   const { id } = useParams();
   const decodedId = atob(id);
-  const { getDonationsDetails, donorData } = useContext(DontationContext);
+  const { getDonationsDetails, deleted, setDeleted } =
+    useContext(DontationContext);
+  const [currentUser, setCurrentUser] = useState();
+  const [checkRole, setCheckRole] = useState();
   const [details, setDetails] = useState();
+  const navigate = useNavigate();
 
   const handleDonationDetails = async () => {
     try {
@@ -23,7 +29,42 @@ function DonationDetails() {
       console.log(error);
     }
   };
+
+  const handleCheckRole = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/check_role", {
+        withCredentials: true,
+      });
+      const { role, user } = res.data;
+      setCheckRole(role);
+      setCurrentUser(user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/donation/delete",
+        { id: decodedId }
+      );
+
+      const data = response.data;
+      if (data) {
+        console.log(`deleted successfully ${decodedId}`);
+        setDeleted(true);
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setDeleted(false);
+    }
+  };
+
   useEffect(() => {
+    handleCheckRole();
     handleDonationDetails();
   }, [decodedId]);
 
@@ -144,11 +185,14 @@ function DonationDetails() {
                 <p class="font-medium">+91 {details?.donorPhone}</p>
               </div>
 
-              {details?.donorId ? (
+              {checkRole == "Donor" && details?.donorId == currentUser?.id ? (
                 <div>
                   <p class="text-sm mt-2 text-gray-500">Accept Donation</p>
-                  <button class="mt-2 w-full rounded-md bg-red-500 px-4 py-2 font-semibold text-white transition-colors hover:bg-green-600">
-                    <Link to="/claim-food">Delete Donation</Link>
+                  <button
+                    onClick={handleDelete}
+                    class="mt-2 w-full rounded-md bg-red-500 px-4 py-2 font-semibold text-white transition-colors hover:bg-red-600"
+                  >
+                    Delete Donation
                   </button>
                 </div>
               ) : (

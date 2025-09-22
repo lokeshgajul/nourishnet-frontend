@@ -7,6 +7,7 @@ import { DontationContext } from "../../context/FoodDonationContext";
 import { Suspense, lazy } from "react";
 import ActiveDonations from "../ActiveDoantions/ActiveDonations";
 import RecentDonations from "../RecentDonations/RecentDonations";
+import CardSkeleton from "../../components/LoadingSkeleton/Card";
 
 const FoodDonationCard = lazy(() =>
   import("../../components/FoodCard/FoodCard")
@@ -102,13 +103,13 @@ const Home = () => {
 
       {/* Active Food Donations */}
       <div className="pt-12">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <h2 className="text-center max-lg:text-xl lg:text-3xl font-medium leading-normal mb-4">
+        <div className="max-w-7xl mx-auto px-6 lg:px-16">
+          <h2 className="text-center max-lg:text-xl lg:text-3xl font-medium leading-normal">
             Active Food Donation Requests
           </h2>
 
-          <div className="flex flex-wrap gap-6 justify-center">
-            <Suspense fallback={<p>Loading food donations...</p>}>
+          <div className="py-4">
+            <Suspense fallback={<CardSkeleton />}>
               <ActiveDonations donorData={donorData} />
             </Suspense>
           </div>
@@ -116,14 +117,14 @@ const Home = () => {
       </div>
 
       {/* Recent Donations */}
-      <div className="pt-6">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <h2 className="text-center max-lg:text-xl lg:text-3xl font-medium leading-normal mb-4">
+      <div className="">
+        <div className="max-w-7xl mx-auto px-6 lg:px-16">
+          <h2 className="text-center max-lg:text-xl lg:text-3xl font-medium leading-normal">
             Recent Food Donations
           </h2>
 
-          <div className="flex flex-wrap gap-6 justify-center">
-            <Suspense fallback={<p>Loading food donations...</p>}>
+          <div className="flex flex-wrap gap-6 justify-center py-4">
+            <Suspense fallback={<CardSkeleton />}>
               <RecentDonations />
             </Suspense>
           </div>

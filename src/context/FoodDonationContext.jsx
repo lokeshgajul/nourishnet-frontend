@@ -15,6 +15,7 @@ export const FoodDonationProvider = ({ children }) => {
   const [donorData, setdonorData] = useState();
   const [loading, setLoading] = useState(false);
   const [donationData, setDonationData] = useState([]);
+  const [deleted, setDeleted] = useState(false);
 
   const handleFoodDonation = (field, value) => {
     setFoodDonationForm((prev) => ({
@@ -99,6 +100,8 @@ export const FoodDonationProvider = ({ children }) => {
     foodDonationForm,
     handleFoodDonation,
     loading,
+    deleted,
+    setDeleted,
     donorData,
     donationData,
     getDonationsDetails,

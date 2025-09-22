@@ -4,6 +4,7 @@ import HomeImg from "../../../assets/images/ngoHome.jpeg";
 import NGoStats from "../NgoStats/StatsCard";
 import { DontationContext } from "../../../context/FoodDonationContext";
 import ActiveDonations from "../../ActiveDoantions/ActiveDonations";
+import ClaimedDonations from "../ClaimedDonations/ClaimedDonations";
 
 const FoodDonationCard = lazy(() =>
   import("../../../components/FoodCard/FoodCard")
@@ -58,19 +59,33 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="w-full py-12 px-4 lg:px-12">
+        <div className="w-full py-12 px-4 lg:px-6">
           <NGoStats />
         </div>
 
         <div className="">
-          <div className="mx-auto px-6 lg:px-12">
+          <div className="mx-auto px-6 lg:px-6">
             <h2 className=" max-lg:text-xl lg:text-3xl font-medium leading-normal">
               Active Food Donation Requests
             </h2>
 
-            <div className="flex flex-wrap gap-6 py-12">
+            <div className="py-12">
               <Suspense fallback={<p>Loading food donations...</p>}>
                 <ActiveDonations donorData={donorData} />
+              </Suspense>
+            </div>
+          </div>
+        </div>
+
+        <div className="">
+          <div className="mx-auto px-6 lg:px-6">
+            <h2 className=" max-lg:text-xl lg:text-3xl font-medium leading-normal">
+              Claimed Donations History
+            </h2>
+
+            <div className="py-12">
+              <Suspense fallback={<p>Loading food donations...</p>}>
+                <ClaimedDonations />
               </Suspense>
             </div>
           </div>

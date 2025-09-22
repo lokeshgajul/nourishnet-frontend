@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import { DontationContext } from "../../context/FoodDonationContext";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Datetime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
 
@@ -13,6 +13,8 @@ const RequestFood = () => {
   const [time, setTime] = useState();
   const { id } = useParams();
   const decodedId = atob(id);
+  const navigate = useNavigate();
+
   const getNgoDetails = async () => {
     try {
       const response = await axios.get(`http://localhost:3000/ngo/details/`, {
@@ -21,6 +23,43 @@ const RequestFood = () => {
 
       const data = response.data;
       console.log("details ", data);
+      setDetails(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleFoodClaimRequest = async (e) => {
+    e.preventDefault();
+    try {
+      let IsoTime = null;
+
+      if (time) {
+        const dateObj = new Date(time);
+        IsoTime = dateObj.toISOString();
+      }
+
+      const payload = {
+        ngoId: details._id,
+        ngoName: details.ngoName,
+        ngoContactNo: details.phone,
+        ngoEmail: details.email,
+        foodPickUpTime: IsoTime,
+        donorName: donorDetails.donorName,
+        donorContactNo: donorDetails.donorPhone,
+        teamSize: 2,
+      };
+      const response = await axios.post(
+        `http://localhost:3000/ngo/claim/`,
+        payload,
+        {
+          withCredentials: true,
+        }
+      );
+
+      const data = response.data;
+      console.log("details ", data);
+      navigate("/");
       setDetails(data);
     } catch (error) {
       console.log(error);
@@ -201,6 +240,7 @@ const RequestFood = () => {
             <div className="w-full flex justify-center mt-2">
               <button
                 type="submit"
+                onClick={handleFoodClaimRequest}
                 className="bg-green-600 w-full max-md:text-sm hover:bg-green-700 text-white font-medium px-6 py-2 rounded-md shadow-md transition-all"
               >
                 Claim Now

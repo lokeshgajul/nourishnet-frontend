@@ -7,14 +7,14 @@ const FoodDonationCard = ({ donations = [], donorData }) => {
   }
 
   return (
-    <div className="w-full grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-6 max-[200px]:px-2">
+    <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-10 p-6 max-[200px]:px-2">
       {donations.map((item, id) => (
         <div
           key={id}
           className="w-full bg-white rounded-xl shadow-md hover:shadow-lg transition-all"
         >
           {/* Image */}
-          <div className="w-full h-52 sm:h-56 lg:h-64 overflow-hidden rounded-t-xl">
+          <div className="w-full h-40 sm:h-48 lg:h-44 overflow-hidden rounded-t-xl">
             <img
               className="w-full h-full object-cover"
               src={item.foodImage}
