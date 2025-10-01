@@ -14,7 +14,8 @@ export const FoodDonationProvider = ({ children }) => {
   });
   const [donorData, setdonorData] = useState();
   const [loading, setLoading] = useState(false);
-  const [donationData, setDonationData] = useState([]);
+  const [userDonations, setUserDonations] = useState([]);
+  const [donationDetails, setDonationDetails] = useState();
   const [deleted, setDeleted] = useState(false);
 
   const handleFoodDonation = (field, value) => {
@@ -60,13 +61,12 @@ export const FoodDonationProvider = ({ children }) => {
       const data = await response.data;
       setdonorData(data);
       setLoading(false);
-      console.log("donor details ", data);
     } catch (error) {
       console.log(error);
     }
   }, [donorData]);
 
-  const getRecentDoantions = async () => {
+  const getUserDonations = async () => {
     try {
       const response = await axios.get(
         `http://localhost:3000/donor/donations/${donorData._id}`
@@ -74,7 +74,7 @@ export const FoodDonationProvider = ({ children }) => {
 
       const data = response.data;
       console.log(data);
-      setDonationData(data.donor_donations);
+      setUserDonations(data.donor_donations);
     } catch (error) {
       console.log(error);
     }
@@ -85,7 +85,7 @@ export const FoodDonationProvider = ({ children }) => {
       const response = await axios.get(`http://localhost:3000/donation/${id}`);
 
       const data = response.data;
-      console.log("details ", data);
+      // console.log("details ", data);
       return data;
     } catch (error) {
       console.log(error);
@@ -103,9 +103,11 @@ export const FoodDonationProvider = ({ children }) => {
     deleted,
     setDeleted,
     donorData,
-    donationData,
+    userDonations,
     getDonationsDetails,
-    getRecentDoantions,
+    getUserDonations,
+    donationDetails,
+    setDonationDetails,
   };
 
   return (

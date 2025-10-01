@@ -1,10 +1,12 @@
-import React, { lazy, Suspense, useContext } from "react";
+import React, { lazy, Suspense, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import HomeImg from "../../../assets/images/ngoHome.jpeg";
 import NGoStats from "../NgoStats/StatsCard";
 import { DontationContext } from "../../../context/FoodDonationContext";
 import ActiveDonations from "../../ActiveDoantions/ActiveDonations";
 import ClaimedDonations from "../ClaimedDonations/ClaimedDonations";
+import axios from "axios";
+import { NgoContext } from "../../../context/NgoContext";
 
 const FoodDonationCard = lazy(() =>
   import("../../../components/FoodCard/FoodCard")
@@ -12,6 +14,12 @@ const FoodDonationCard = lazy(() =>
 
 const Home = () => {
   const { donorData } = useContext(DontationContext);
+  const { getNgoDetails, ngoDetails } = useContext(NgoContext);
+
+  useEffect(() => {
+    getNgoDetails();
+  }, []);
+
   return (
     <div
       style={{
@@ -22,35 +30,20 @@ const Home = () => {
         <div className=" flex flex-row py-12 pt-24 md:pt-28 max-[1000px]:flex-col max-lg:items-center">
           <div className="flex-1 flex justify-center flex-col max-lg:items-center px-4 lg:px-8">
             <h1 className="max-lg:text-xl lg:text-3xl text-gray-700 font-medium lg:pt-9 text-center lg:text-left">
-              Nourish Communities, Not Landfills.
+              <span className="text-green-600">Welcome, </span>
+              {ngoDetails?.ngoName}
             </h1>
 
             <p className="pt-4 lg:text-lg text-sm text-center lg:text-left text-gray-700">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur
-              nemo sit illo inventore nobis est similique magni voluptate
-              distinctio deleniti facilis id quasi nihil quis, sequi cupiditate.
-              Provident, commodi minus.
+              {ngoDetails?.bio}
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis
+              accusamus sunt nesciunt cum ducimus blanditiis, exercitationem
+              distinctio earum magni iusto ratione magnam, aliquid neque dicta
+              velit a quasi reiciendis necessitatibus?
             </p>
-
-            <div className="py-4 lg:py-7 flex flex-wrap justify-center lg:justify-start gap-4">
-              <Link to="/donate-food">
-                <button
-                  className="bg-green-600 px-5 py-3 text-sm font-medium text-white rounded-full cursor-pointer"
-                  type="button"
-                >
-                  Donate Now
-                </button>
-              </Link>
-              <button
-                className="border border-slate-200 px-5 py-3 text-sm font-medium text-black rounded-full cursor-pointer"
-                type="button"
-              >
-                Volunteer Today
-              </button>
-            </div>
           </div>
 
-          <div className="flex-1 flex justify-center rounded-md px-4 lg:px-8">
+          <div className="flex-1 flex justify-center rounded-md max-[1000px]:mt-6 px-4 lg:px-8">
             <img
               src={HomeImg}
               alt="NourishNet Home"
@@ -64,7 +57,7 @@ const Home = () => {
         </div>
 
         <div className="">
-          <div className="mx-auto px-6 lg:px-6">
+          <div className="">
             <h2 className=" max-lg:text-xl lg:text-3xl font-medium leading-normal">
               Active Food Donation Requests
             </h2>
@@ -78,7 +71,7 @@ const Home = () => {
         </div>
 
         <div className="">
-          <div className="mx-auto px-6 lg:px-6">
+          <div className="">
             <h2 className=" max-lg:text-xl lg:text-3xl font-medium leading-normal">
               Claimed Donations History
             </h2>

@@ -47,12 +47,12 @@ function LandingPage() {
                 >
                   Home
                 </a>
-                <a
-                  href="#how-it-works"
+                <Link
+                  to="about"
                   className="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors"
                 >
-                  How It Works
-                </a>
+                  About Us
+                </Link>
                 <a
                   href="#donate"
                   className="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors"
@@ -65,12 +65,12 @@ function LandingPage() {
                 >
                   Claim Food
                 </a>
-                <a
-                  href="#contact"
+                <Link
+                  to="feedback"
                   className="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors"
                 >
-                  Contact
-                </a>
+                  Feedback
+                </Link>
               </div>
             </div>
 

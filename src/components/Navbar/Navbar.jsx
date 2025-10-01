@@ -1,17 +1,39 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { MdMenu, MdClose } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
+import { NgoContext } from "../../context/NgoContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const { verfiyCookie, isAuthenticated, setIsAuthenticated } =
     useContext(AuthContext);
+  const { handleCheckRole, checkRole, currentUser, ngoDetails } =
+    useContext(NgoContext);
+
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const links = ["Donors", "Volunteers", "NGO's", "About", "Contact"];
+  const links = [
+    { name: "Donors", path: "/donors" },
+    { name: "Volunteers", path: "/volunteers" },
+    { name: "NGO's", path: "/ngos" },
+    { name: "About Us", path: "/about" },
+    { name: "Feedback", path: "/feedback" },
+  ];
+
+  useEffect(() => {
+    handleCheckRole();
+  }, []);
+
+  const handleProfile = () => {
+    if (checkRole === "Ngo") {
+      navigate("/ngo-profile");
+    } else {
+      navigate("/donor-profile");
+    }
+  };
 
   const AuthButton = () =>
     isAuthenticated ? (
@@ -25,7 +47,10 @@ const Navbar = () => {
         >
           LogOut
         </span>
-        <span className="bg-neutral-100 rounded-full p-3 cursor-pointer">
+        <span
+          onClick={() => handleProfile()}
+          className="bg-neutral-100 rounded-full p-3 cursor-pointer"
+        >
           <FaUser />
         </span>
       </>
@@ -69,9 +94,13 @@ const Navbar = () => {
         </h2>
 
         <ul className="hidden md:flex gap-3">
-          {links.map((link) => (
-            <li key={link} className="cursor-pointer">
-              {link}
+          {links.map((link, index) => (
+            <li
+              onClick={() => navigate(link.path)}
+              key={index}
+              className="cursor-pointer"
+            >
+              {link.name}
             </li>
           ))}
         </ul>
@@ -103,9 +132,13 @@ const Navbar = () => {
         }`}
       >
         <ul className="flex flex-col items-end gap-3 p-4  text-center">
-          {links.map((link) => (
-            <li key={link} className="cursor-pointer w-full">
-              {link}
+          {links.map((link, index) => (
+            <li
+              key={index}
+              className="cursor-pointer w-full"
+              onClick={() => navigate(link.path)}
+            >
+              {link.name}
             </li>
           ))}
           <div className="w-full flex justify-center">

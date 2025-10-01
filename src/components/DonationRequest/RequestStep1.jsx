@@ -22,23 +22,23 @@ const DonationRequest = ({ onNext }) => {
   const options = [
     {
       id: 1,
-      name: "Leanne Graham",
+      name: "Cooked Meal",
     },
     {
       id: 2,
-      name: "Ervin Howell",
+      name: "Packed Food",
     },
     {
       id: 3,
-      name: "Ervin Howell",
+      name: "Fruits & Vegetables",
     },
     {
       id: 4,
-      name: "Ervin Howell",
+      name: "Groceries",
     },
     {
       id: 5,
-      name: "Ervin Howell",
+      name: "Others",
     },
   ];
 

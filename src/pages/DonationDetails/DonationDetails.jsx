@@ -12,18 +12,21 @@ import { AuthContext } from "../../context/AuthContext";
 function DonationDetails() {
   const { id } = useParams();
   const decodedId = atob(id);
-  const { getDonationsDetails, deleted, setDeleted } =
-    useContext(DontationContext);
+  const {
+    getDonationsDetails,
+    setDeleted,
+    donationDetails,
+    setDonationDetails,
+  } = useContext(DontationContext);
   const [currentUser, setCurrentUser] = useState();
   const [checkRole, setCheckRole] = useState();
-  const [details, setDetails] = useState();
   const navigate = useNavigate();
 
   const handleDonationDetails = async () => {
     try {
       const data = await getDonationsDetails(decodedId);
       if (data) {
-        setDetails(data);
+        setDonationDetails(data);
       }
     } catch (error) {
       console.log(error);
@@ -32,7 +35,7 @@ function DonationDetails() {
 
   const handleCheckRole = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/check_role", {
+      const res = await axios.get("http://localhost:3000/user_role", {
         withCredentials: true,
       });
       const { role, user } = res.data;
@@ -76,7 +79,6 @@ function DonationDetails() {
             <h1 className="max-lg:text-xl lg:text-3xl font-medium lg:pt-9">
               Donation Details
             </h1>
-            <h2>{decodedId}</h2>
 
             <p className="pt-4 lg:text-lg text-sm">
               Review comprehensive information for each donation, ensuring
@@ -123,22 +125,45 @@ function DonationDetails() {
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <p class="text-sm text-gray-500">Request Raised</p>
-                <p class="font-medium">October 26, 2024</p>
+                <p class="font-medium">
+                  {donationDetails?.createdAt
+                    ? new Date(donationDetails.createdAt).toLocaleString(
+                        undefined,
+                        {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        }
+                      )
+                    : "Not Mentioned"}
+                </p>
               </div>
               <div>
                 <p class="text-sm text-gray-500">Donation Status</p>
-                <p class="font-medium text-green-600">Pending</p>
+                <p
+                  class={`font-medium ${
+                    donationDetails?.donationStatus === "Claimed"
+                      ? "text-green-600"
+                      : donationDetails?.donationStatus === "Pending"
+                      ? "text-yellow-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {donationDetails?.donationStatus || "Pending"}
+                </p>
               </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <p class="text-sm text-gray-500">Food Category</p>
-                <p class="font-medium">{details?.foodCategory}</p>
+                <p class="font-medium">{donationDetails?.foodCategory}</p>
               </div>
               <div>
                 <p class="text-sm text-gray-500">Total Items</p>
-                <p class="font-medium">{details?.foodQuantity}</p>
+                <p class="font-medium">{donationDetails?.foodQuantity}</p>
               </div>
             </div>
 
@@ -149,7 +174,7 @@ function DonationDetails() {
               <div class="mt-2 w-full overflow-hidden rounded-md">
                 <img
                   class="h-96 w-full object-conatin"
-                  src={details?.foodImage || foodImage}
+                  src={donationDetails?.foodImage || foodImage}
                   alt="Food donation"
                 />
               </div>
@@ -163,7 +188,7 @@ function DonationDetails() {
             <div class="flex flex-col gap-4">
               <div>
                 <p class="text-sm text-gray-500">Name</p>
-                <p class="font-medium">{details?.donorName}</p>
+                <p class="font-medium">{donationDetails?.donorName}</p>
               </div>
               <div>
                 <p class="text-sm text-gray-500">Donor Type</p>
@@ -171,7 +196,7 @@ function DonationDetails() {
               </div>
               <div>
                 <p class="text-sm text-gray-500">Address</p>
-                <p class="font-medium">{details?.donorAddress}</p>
+                <p class="font-medium">{donationDetails?.donorAddress}</p>
               </div>
             </div>
           </div>
@@ -182,19 +207,23 @@ function DonationDetails() {
               <div>
                 <p class="text-sm text-gray-500">Contact Donor</p>
                 <p class="font-medium">lokeshg@gmail.com</p>
-                <p class="font-medium">+91 {details?.donorPhone}</p>
+                <p class="font-medium">+91 {donationDetails?.donorPhone}</p>
               </div>
 
-              {checkRole == "Donor" && details?.donorId == currentUser?.id ? (
-                <div>
-                  <p class="text-sm mt-2 text-gray-500">Accept Donation</p>
-                  <button
-                    onClick={handleDelete}
-                    class="mt-2 w-full rounded-md bg-red-500 px-4 py-2 font-semibold text-white transition-colors hover:bg-red-600"
-                  >
-                    Delete Donation
-                  </button>
-                </div>
+              {checkRole == "Donor" ? (
+                donationDetails?.donorId == currentUser?.id ? (
+                  <div>
+                    <p class="text-sm mt-2 text-gray-500">Accept Donation</p>
+                    <button
+                      onClick={handleDelete}
+                      class="mt-2 w-full rounded-md bg-red-500 px-4 py-2 font-semibold text-white transition-colors cursor-pointer hover:bg-red-600"
+                    >
+                      Delete Donation
+                    </button>
+                  </div>
+                ) : (
+                  <></>
+                )
               ) : (
                 <div>
                   <p class="text-sm mt-2 text-gray-500">Accept Donation</p>

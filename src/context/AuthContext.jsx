@@ -11,7 +11,6 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [cookies, removeCookie] = useCookies([]);
   const [user, setUser] = useState(null);
-  const [role, setRole] = useState(null);
 
   const Register = async (
     role,
@@ -53,7 +52,6 @@ export const AuthProvider = ({ children }) => {
       );
       const data = response.data;
       setUser(data);
-      setRole(data.role);
       setLoading(false);
     } catch (error) {
       console.log("API error:", error);
@@ -85,6 +83,7 @@ export const AuthProvider = ({ children }) => {
 
   const verfiyCookie = async () => {
     try {
+      setLoading(true);
       const response = await axios.post(
         "http://localhost:3000/verify-token",
         {},
@@ -98,7 +97,6 @@ export const AuthProvider = ({ children }) => {
         });
         setIsAuthenticated(valid);
         setCheckRole(user.role);
-        console.log(isAuthenticated);
       } else {
         removeCookie("token");
       }
@@ -108,8 +106,8 @@ export const AuthProvider = ({ children }) => {
         error.response?.data || error.message
       );
       setIsAuthenticated(false);
-      console.log(isAuthenticated);
-      // removeCookie("token");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -121,8 +119,6 @@ export const AuthProvider = ({ children }) => {
     verfiyCookie,
     isAuthenticated,
     setIsAuthenticated,
-    role,
-    setRole,
     checkRole,
   };
 

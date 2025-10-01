@@ -9,7 +9,8 @@ import "react-datetime/css/react-datetime.css";
 const RequestFood = () => {
   const [details, setDetails] = useState();
   const [donorDetails, setDonorDetails] = useState();
-  const { getDonationsDetails } = useContext(DontationContext);
+  const { getDonationsDetails, donationDetails } = useContext(DontationContext);
+  const [teamSize, setTeamSize] = useState();
   const [time, setTime] = useState();
   const { id } = useParams();
   const decodedId = atob(id);
@@ -45,9 +46,9 @@ const RequestFood = () => {
         ngoContactNo: details.phone,
         ngoEmail: details.email,
         foodPickUpTime: IsoTime,
-        donorName: donorDetails.donorName,
-        donorContactNo: donorDetails.donorPhone,
-        teamSize: 2,
+        teamSize: teamSize,
+        donationId: donationDetails._id,
+        donationStatus: "Claimed",
       };
       const response = await axios.post(
         `http://localhost:3000/ngo/claim/`,
@@ -223,9 +224,11 @@ const RequestFood = () => {
               Team Size
             </label>
             <input
-              type="tel"
+              type="Number"
               id="teamsize"
               name="teamsize"
+              value={teamSize}
+              onChange={(e) => setTeamSize(e.target.value)}
               placeholder="e.g., 2"
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
             />

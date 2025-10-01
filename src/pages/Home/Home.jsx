@@ -105,10 +105,10 @@ const Home = () => {
       <div className="pt-12">
         <div className="max-w-7xl mx-auto px-6 lg:px-16">
           <h2 className="text-center max-lg:text-xl lg:text-3xl font-medium leading-normal">
-            Active Food Donation Requests
+            Active Food Donations
           </h2>
 
-          <div className="py-4">
+          <div className="py-6">
             <Suspense fallback={<CardSkeleton />}>
               <ActiveDonations donorData={donorData} />
             </Suspense>
@@ -123,7 +123,7 @@ const Home = () => {
             Recent Food Donations
           </h2>
 
-          <div className="flex flex-wrap gap-6 justify-center py-4">
+          <div className="flex flex-wrap gap-6 justify-center py-6">
             <Suspense fallback={<CardSkeleton />}>
               <RecentDonations />
             </Suspense>

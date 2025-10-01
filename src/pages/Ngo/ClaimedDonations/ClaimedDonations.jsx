@@ -39,7 +39,7 @@ const ClaimedDonations = () => {
             </div>
             <div className="text-sm text-gray-800">
               <span className="font-bold tracking-wide bg-green-100 border border-slate-200 px-4 py-1 rounded-full">
-                Claimed
+                {item.donationStatus}
               </span>
             </div>
           </div>

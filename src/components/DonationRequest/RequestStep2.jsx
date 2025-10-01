@@ -22,6 +22,7 @@ const RequestStep2 = () => {
     formData.append("donorName", donorData.donorName);
     formData.append("donorPhone", donorData.phone);
     formData.append("donorAddress", donorData.address);
+    formData.append("donationStatus", "Pending");
 
     try {
       const response = await axios.post(
