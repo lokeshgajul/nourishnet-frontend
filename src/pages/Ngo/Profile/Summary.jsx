@@ -17,7 +17,7 @@ function StatCard({ title, value }) {
   );
 }
 
-export default function DonationSummary({ claimedDonations }) {
+export default function DonationSummary({ claimedDonations = [] }) {
   const getPendingCount = () => {
     return claimedDonations.filter((item) => item.donationStatus === "Pending")
       .length;

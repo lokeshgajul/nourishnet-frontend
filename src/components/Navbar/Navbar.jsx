@@ -8,10 +8,8 @@ import { NgoContext } from "../../context/NgoContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { verfiyCookie, isAuthenticated, setIsAuthenticated } =
-    useContext(AuthContext);
-  const { handleCheckRole, checkRole, currentUser, ngoDetails } =
-    useContext(NgoContext);
+  const { verfiyCookie, isAuthenticated, logout } = useContext(AuthContext);
+  const { handleCheckRole, checkRole } = useContext(NgoContext);
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -32,6 +30,13 @@ const Navbar = () => {
       navigate("/ngo-profile");
     } else {
       navigate("/donor-profile");
+    }
+  };
+  const handleLogout = async () => {
+    const result = await logout();
+    navigate("/");
+    if (result === false) {
+      await verfiyCookie();
     }
   };
 
@@ -59,32 +64,6 @@ const Navbar = () => {
         Sign Up
       </span>
     );
-
-  const logout = async () => {
-    try {
-      const res = await axios.post(
-        "http://localhost:3000/logout",
-        {},
-        { withCredentials: true }
-      );
-      localStorage.removeItem("status");
-      const { status } = await res.data;
-      setIsAuthenticated(false);
-      console.log(status);
-
-      return status;
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-  };
-
-  const handleLogout = async () => {
-    const result = await logout();
-    navigate("/");
-    if (result === false) {
-      await verfiyCookie();
-    }
-  };
 
   return (
     <div className="fixed top-0 left-0 w-full z-50 shadow-md bg-white">

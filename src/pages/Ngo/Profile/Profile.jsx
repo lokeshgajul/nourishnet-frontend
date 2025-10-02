@@ -1,12 +1,25 @@
 import React, { useContext, useEffect } from "react";
 import { NgoContext } from "../../../context/NgoContext";
-import AccountSettings from "../../Profile/Accounts";
 import DonationSummary from "./Summary";
 import DonationHistory from "./History";
+import { CiMail } from "react-icons/ci";
+import { IoSettingsOutline } from "react-icons/io5";
+import { AuthContext } from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const { ngoDetails, claimedRequests, getAllClaimedReqeusts } =
     useContext(NgoContext);
+  const { logout, verfiyCookie } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    const result = await logout();
+    navigate("/");
+    if (result === false) {
+      await verfiyCookie();
+    }
+  };
 
   useEffect(() => {
     getAllClaimedReqeusts();
@@ -14,51 +27,73 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className="bg-gray-50 min-h-screen mt-20">
+    <div className="bg-gray-50 mt-20">
       <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">
-        {/* Layout Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Profile Card */}
-          <div className="lg:col-span-1">
-            <div className="bg-white shadow-md hover:shadow-lg border border-green-200 rounded-xl transition duration-300">
-              <div className="flex flex-col items-center p-6">
-                <h1 className="text-3xl font-bold text-green-700 mb-10 text-center">
-                  Donor Profile
-                </h1>
-                <div className="h-28 w-28 rounded-full border-4 border-green-500 overflow-hidden mb-4">
-                  <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/donor-profile-picture-MeIUI9bNiRfX0t5CqUTDhnzG3q3jxU.jpg"
-                    alt="Donor Profile Picture"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* ---------------- NGO Profile ---------------- */}
+          <div className=" bg-white shadow-sm hover:shadow-md border border-green-200 rounded-xl transition duration-300 flex flex-col justify-between">
+            <div className="flex flex-col items-center p-6">
+              <div className="h-28 w-28 rounded-full overflow-hidden mb-4">
+                <img
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/donor-profile-picture-MeIUI9bNiRfX0t5CqUTDhnzG3q3jxU.jpg"
+                  alt="NGO Profile Picture"
+                  className="h-full w-full object-cover"
+                />
+              </div>
 
-                <h2 className="text-xl font-bold text-green-600 mb-1">
-                  {ngoDetails?.donorName}
-                </h2>
-                <p className="text-gray-700 text-sm">{ngoDetails?.email}</p>
-                <p className="text-gray-700 text-sm">{ngoDetails?.phone}</p>
-                <p className="text-gray-600 text-sm text-center mt-2">
-                  {ngoDetails?.address}
+              <h2 className="text-xl font-bold mb-1">{ngoDetails?.ngoName}</h2>
+
+              <div className="flex flex-row items-center justify-center gap-1">
+                <CiMail size={20} />
+                <p className="text-gray-700 text-lg tracking-wide">
+                  {ngoDetails?.email}
                 </p>
               </div>
+
+              <p className="text-gray-700 text-sm tracking-wider mt-2">
+                {ngoDetails?.phone}
+              </p>
+              <p className="text-gray-600 text-sm text-center tracking-wider mt-1">
+                {ngoDetails?.address}
+              </p>
+
+              <div className="px-4 mt-2 flex flex-col border-t-2 border-gray-400 pt-4 ">
+                <span className="text-gray-700 font-medium ">
+                  About Our Ngo:
+                </span>
+                <span className="text-gray-600 font-normal text-[15px] mt-2">
+                  {ngoDetails?.bio}
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                  Voluptatibus accusantium voluptatum vitae quos at ipsa!
+                  Repudiandae sequi laudantium commodi atque.
+                </span>
+              </div>
+            </div>
+
+            <div className="p-6 flex flex-col gap-3 ">
+              <button className="w-full py-2 rounded-sm transition border flex flex-row justify-center items-center gap-2 border-gray-300 hover:bg-gray-200 px-4 cursor-pointer">
+                <IoSettingsOutline size={20} />
+                <span>Edit Profile</span>
+              </button>
+              <button
+                onClick={handleLogout}
+                className="w-full py-2 rounded-lg cursor-pointer transition"
+              >
+                Logout
+              </button>
             </div>
           </div>
 
-          <div className="lg:col-span-2 space-y-3">
-            <div className=" rounded-xl p-4 transition duration-300">
+          <div className="space-y-4 col-span-2">
+            <div className="rounded-xl p-4 bg-white shadow-sm hover:shadow-md transition duration-300">
               <DonationSummary claimedDonations={claimedRequests} />
             </div>
 
-            <div className="rounded-xl border-gray-200 p-4 transition duration-300">
+            <div className="rounded-xl p-4 transition duration-300">
               <DonationHistory
                 ngoDetails={ngoDetails}
                 claimedDonations={claimedRequests}
               />
-            </div>
-
-            <div className="bg-white shadow-md rounded-xl p-4 hover:shadow-lg transition duration-300">
-              <AccountSettings />
             </div>
           </div>
         </div>

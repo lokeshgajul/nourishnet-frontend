@@ -13,41 +13,69 @@ const History = ({ claimedDonations }) => {
       <h2 className="text-2xl font-bold text-green-700 mb-6">
         Donation History
       </h2>
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {claimedDonations.map((donation, index) => (
           <div
             key={index}
-            className="bg-white shadow-md hover:shadow-lg hover:shadow-green-100 transition-shadow duration-200"
+            className="bg-white shadow-md hover:shadow-lg rounded-xl transition duration-300 overflow-hidden"
           >
+            {/* Food Image */}
             <img
               src={donation?.foodImage || "/placeholder.svg"}
-              alt={donation?.ngoName}
-              width={400}
-              height={200}
-              className="w-full h-48 object-cover rounded-t-lg"
+              alt={donation?.foodTitle || "Food Donation"}
+              className="w-full h-48 object-cover"
             />
-            <div className="p-4">
-              <h3 className="text-lg font-bold text-green-600 mb-2">
-                {donation?.ngoName}
-              </h3>
-              <span
-                className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                  donation?.donationStatus == "Pending"
-                    ? "bg-yellow-100 text-yellow-500"
-                    : "bg-green-100 text-green-600"
-                } mb-2`}
-              >
-                {donation.claimedAt}
-              </span>
-              <p className="text-gray-600 mb-2">{donation.foodDescription}</p>
-              <div
-                className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                  donation?.donationStatus == "Pending"
-                    ? "bg-yellow-100 text-yellow-500"
-                    : "bg-green-100 text-green-600"
-                }`}
-              >
-                {donation?.donationStatus}
+
+            {/* Details */}
+            <div className="p-5 gap-2">
+              {/* Food Info */}
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm capitalize font-semibold text-green-700">
+                  {donation?.foodTitle || "Food Item"}
+                </h3>
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    donation?.donationStatus === "Pending"
+                      ? "bg-yellow-100 text-yellow-600"
+                      : "bg-green-100 text-green-700"
+                  }`}
+                >
+                  {donation?.donationStatus}
+                </span>
+              </div>
+
+              <p className="text-gray-600 text-[13px] mt-2">
+                {donation?.foodDescription.slice(0, 60) ||
+                  "No description provided"}
+                ...
+              </p>
+
+              {/* Donor Info */}
+              <div className="text-sm text-gray-700 py-2 space-y-1">
+                <p>
+                  <span className="font-normal">Donor:</span>{" "}
+                  {donation?.donorName || "Anonymous"}
+                </p>
+                <p>
+                  <span className="font-normal">Location:</span>{" "}
+                  {donation?.donorAddress || "Not specified"}
+                </p>
+              </div>
+
+              {/* Date Info */}
+              <div className="text-sm text-gray-500">
+                <p>
+                  <span className="font-semibold">Claimed At:</span>{" "}
+                  {donation?.claimedAt
+                    ? new Date(donation.claimedAt).toLocaleDateString()
+                    : "N/A"}
+                </p>
+                {donation?.expiryTime && (
+                  <p>
+                    <span className="font-semibold">Expiry:</span>{" "}
+                    {new Date(donation.expiryTime).toLocaleString()}
+                  </p>
+                )}
               </div>
             </div>
           </div>

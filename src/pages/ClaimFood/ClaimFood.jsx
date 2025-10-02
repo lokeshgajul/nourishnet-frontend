@@ -8,7 +8,6 @@ import "react-datetime/css/react-datetime.css";
 
 const RequestFood = () => {
   const [details, setDetails] = useState();
-  const [donorDetails, setDonorDetails] = useState();
   const { getDonationsDetails, donationDetails } = useContext(DontationContext);
   const [teamSize, setTeamSize] = useState();
   const [time, setTime] = useState();
@@ -30,6 +29,17 @@ const RequestFood = () => {
     }
   };
 
+  const handleDonationDetails = async () => {
+    try {
+      await getDonationsDetails(decodedId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    handleDonationDetails();
+  }, [decodedId]);
+
   const handleFoodClaimRequest = async (e) => {
     e.preventDefault();
     try {
@@ -45,9 +55,15 @@ const RequestFood = () => {
         ngoName: details.ngoName,
         ngoContactNo: details.phone,
         ngoEmail: details.email,
+        ngoAddress: details.address,
+        foodTitle: donationDetails.foodTitle,
+        foodImage: donationDetails.foodImage,
+        foodDescription: donationDetails.foodDescription,
         foodPickUpTime: IsoTime,
         teamSize: teamSize,
         donationId: donationDetails._id,
+        donorName: donationDetails.donorName,
+        donorAddress: donationDetails.donorAddress,
         donationStatus: "Claimed",
       };
       const response = await axios.post(
@@ -66,21 +82,6 @@ const RequestFood = () => {
       console.log(error);
     }
   };
-
-  const handleDonationDetails = async () => {
-    try {
-      const data = await getDonationsDetails(decodedId);
-      if (data) {
-        setDonorDetails(data);
-        console.log(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    handleDonationDetails();
-  }, [decodedId]);
 
   useEffect(() => {
     getNgoDetails();
@@ -194,7 +195,7 @@ const RequestFood = () => {
               type="text"
               id="Donor"
               name="Donor"
-              value={donorDetails?.donorName}
+              value={donationDetails?.donorName}
               placeholder="Donor"
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
             />
@@ -210,7 +211,7 @@ const RequestFood = () => {
               type="text"
               id="contactPerson"
               name="contactPerson"
-              value={donorDetails?.donorPhone}
+              value={donationDetails?.donorPhone}
               placeholder="Person Name"
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
             />

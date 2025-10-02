@@ -85,7 +85,7 @@ export const FoodDonationProvider = ({ children }) => {
       const response = await axios.get(`http://localhost:3000/donation/${id}`);
 
       const data = response.data;
-      // console.log("details ", data);
+      setDonationDetails(data);
       return data;
     } catch (error) {
       console.log(error);

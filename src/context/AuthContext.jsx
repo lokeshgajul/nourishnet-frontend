@@ -111,6 +111,24 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const logout = async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/logout",
+        {},
+        { withCredentials: true }
+      );
+      localStorage.removeItem("status");
+      const { status } = await res.data;
+      setIsAuthenticated(false);
+      console.log(status);
+
+      return status;
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+
   const value = {
     Register,
     Login,
@@ -119,6 +137,7 @@ export const AuthProvider = ({ children }) => {
     verfiyCookie,
     isAuthenticated,
     setIsAuthenticated,
+    logout,
     checkRole,
   };
 
