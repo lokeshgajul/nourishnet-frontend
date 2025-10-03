@@ -5,6 +5,12 @@ import AccountSettings from "./Accounts";
 import { useContext } from "react";
 import { DontationContext } from "../../context/FoodDonationContext";
 import { useEffect } from "react";
+import { IoSettingsOutline } from "react-icons/io5";
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { CiCamera } from "react-icons/ci";
+import axios from "axios";
 
 const Profile = () => {
   const {
@@ -15,11 +21,62 @@ const Profile = () => {
     deleted,
   } = useContext(DontationContext);
 
+  const { logout, verfiyCookie } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [preview, setPreview] = useState(null);
+
+  const handleLogout = async () => {
+    const result = await logout();
+    navigate("/");
+    if (result === false) {
+      await verfiyCookie();
+    }
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Local preview
+    setPreview(URL.createObjectURL(file));
+
+    const formData = new FormData();
+    formData.append("profileImage", file);
+
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3000/upload-profile",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        }
+      );
+
+      if (data.success) {
+        alert("Profile image updated successfully!");
+        setPreview(data.profileImage);
+        // Optionally refresh donorData
+        getDonorDetails();
+      } else {
+        alert("Upload failed: " + data.message);
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert("Upload failed due to network/server error");
+    }
+  };
+
+  const profileImageToShow =
+    preview ||
+    donorData?.profileImage ||
+    "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/donor-profile-picture-MeIUI9bNiRfX0t5CqUTDhnzG3q3jxU.jpg";
+
   useEffect(() => {
     if (!donorData) {
       getDonorDetails();
     }
-  }, [donorData, getDonorDetails]);
+  }, [donorData, getDonorDetails, preview]);
 
   useEffect(() => {
     if (donorData?._id) {
@@ -39,12 +96,28 @@ const Profile = () => {
                 <h1 className="text-3xl font-bold text-green-700 mb-10 text-center">
                   Donor Profile
                 </h1>
-                <div className="h-28 w-28 rounded-full border-4 border-green-500 overflow-hidden mb-4">
-                  <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/donor-profile-picture-MeIUI9bNiRfX0t5CqUTDhnzG3q3jxU.jpg"
-                    alt="Donor Profile Picture"
-                    className="h-full w-full object-cover"
-                  />
+                <div className="relative mb-6">
+                  <div className="h-28 w-28 rounded-full overflow-hidden">
+                    <img
+                      src={profileImageToShow}
+                      alt="NGO Profile Picture"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+
+                  <label
+                    htmlFor="profileImageUpload"
+                    className="absolute -bottom-3 -right-2 bg-green-500 text-white rounded-full p-2 shadow-md cursor-pointer hover:bg-green-600 transition"
+                  >
+                    <CiCamera size={20} width={3} />
+                    <input
+                      type="file"
+                      id="profileImageUpload"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                    />
+                  </label>
                 </div>
 
                 <h2 className="text-xl font-bold text-green-600 mb-1">
@@ -55,6 +128,19 @@ const Profile = () => {
                 <p className="text-gray-600 text-sm text-center mt-2">
                   {donorData?.address}
                 </p>
+
+                <div className="p-6 flex flex-col gap-3 ">
+                  <button className="w-full py-2 rounded-sm transition border flex flex-row justify-center items-center gap-2 border-gray-300 hover:bg-gray-200 px-4 cursor-pointer">
+                    <IoSettingsOutline size={20} />
+                    <span>Edit Profile</span>
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full py-2 rounded-lg cursor-pointer transition"
+                  >
+                    Logout
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -69,10 +155,6 @@ const Profile = () => {
                 donorData={donorData}
                 userDonation={userDonations}
               />
-            </div>
-
-            <div className="bg-white shadow-md rounded-xl p-4 hover:shadow-lg transition duration-300">
-              <AccountSettings />
             </div>
           </div>
         </div>

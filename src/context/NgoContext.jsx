@@ -49,10 +49,6 @@ export const NgoProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    getNgoDetails();
-  }, []);
-
   const value = {
     ngoDetails,
     checkRole,

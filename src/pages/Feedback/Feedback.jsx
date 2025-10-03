@@ -1,14 +1,36 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Feedback = () => {
   const [role, setRole] = useState("Donor");
   const [feedback, setFeedback] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Role:", role, "Feedback:", feedback);
-    alert("Thank you for your feedback!");
-    setFeedback("");
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/feedback",
+        { feedback },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.data;
+      console.log("Data ", data);
+
+      alert("Thank you for your feedback!");
+      setFeedback("");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -26,22 +48,6 @@ const Feedback = () => {
         onSubmit={handleSubmit}
         className="bg-white shadow-lg rounded-2xl p-8 space-y-6"
       >
-        {/* Role selection */}
-        <div>
-          <label className="block text-gray-700 font-medium mb-2">
-            You are a:
-          </label>
-          <select
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            className="w-full border rounded-lg p-3 focus:ring-2 focus:ring-green-400"
-          >
-            <option value="Donor">Donor</option>
-            <option value="NGO">NGO</option>
-          </select>
-        </div>
-
-        {/* Feedback textarea */}
         <div>
           <label className="block text-gray-700 font-medium mb-2">
             Your Feedback

@@ -13,7 +13,7 @@ const History = ({ claimedDonations }) => {
       <h2 className="text-2xl font-bold text-green-700 mb-6">
         Donation History
       </h2>
-      <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {claimedDonations.map((donation, index) => (
           <div
             key={index}

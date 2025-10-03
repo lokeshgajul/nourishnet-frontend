@@ -39,7 +39,9 @@ const History = ({ userDonation }) => {
               >
                 {donation.foodCategory}
               </span>
-              <p className="text-gray-600 mb-2">{donation.foodDescription}</p>
+              <p className="text-gray-600 mb-2">
+                {donation.foodDescription.slice(0, 50)}...
+              </p>
               <div
                 className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                   donation?.donationStatus == "Pending"

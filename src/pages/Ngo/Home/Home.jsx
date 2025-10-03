@@ -56,31 +56,27 @@ const Home = () => {
           <NGoStats />
         </div>
 
-        <div className="">
-          <div className="">
-            <h2 className=" max-lg:text-xl lg:text-3xl font-medium leading-normal">
-              Active Food Donation Requests
-            </h2>
+        <div className="px-4 lg:px-6">
+          <h2 className=" max-lg:text-xl lg:text-3xl font-medium leading-normal">
+            Active Food Donation Requests
+          </h2>
 
-            <div className="py-12">
-              <Suspense fallback={<p>Loading food donations...</p>}>
-                <ActiveDonations donorData={donorData} />
-              </Suspense>
-            </div>
+          <div className="py-12 ">
+            <Suspense fallback={<p>Loading food donations...</p>}>
+              <ActiveDonations donorData={donorData} />
+            </Suspense>
           </div>
         </div>
 
-        <div className="">
-          <div className="">
-            <h2 className=" max-lg:text-xl lg:text-3xl font-medium leading-normal">
-              Claimed Donations History
-            </h2>
+        <div className="px-4 lg:px-6">
+          <h2 className=" max-lg:text-xl lg:text-3xl font-medium leading-normal">
+            Claimed Donations History
+          </h2>
 
-            <div className="py-12">
-              <Suspense fallback={<p>Loading food donations...</p>}>
-                <ClaimedDonations />
-              </Suspense>
-            </div>
+          <div className="py-12 ">
+            <Suspense fallback={<p>Loading food donations...</p>}>
+              <ClaimedDonations />
+            </Suspense>
           </div>
         </div>
       </div>
