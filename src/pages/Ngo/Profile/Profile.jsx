@@ -37,7 +37,7 @@ const Profile = () => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/upload-profile",
+        "https://nourishnet-backend.vercel.app/upload-profile",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -125,9 +125,6 @@ const Profile = () => {
                 </span>
                 <span className="text-gray-600 font-normal text-[15px] mt-2">
                   {ngoDetails?.bio}
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Voluptatibus accusantium voluptatum vitae quos at ipsa!
-                  Repudiandae sequi laudantium commodi atque.
                 </span>
               </div>
             </div>

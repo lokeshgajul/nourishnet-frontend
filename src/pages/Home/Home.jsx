@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import homeImage from "../../assets/images/homeImage.png";
+import homeImage from "../../assets/images/donation2.jpg";
 import { ToastContainer } from "react-toastify";
 import { BiLeaf } from "react-icons/bi";
 import { Link } from "react-router-dom";
@@ -8,6 +8,8 @@ import { Suspense, lazy } from "react";
 import ActiveDonations from "../ActiveDoantions/ActiveDonations";
 import RecentDonations from "../RecentDonations/RecentDonations";
 import CardSkeleton from "../../components/LoadingSkeleton/Card";
+import { FaHandsHelping } from "react-icons/fa";
+import { BsGlobe2 } from "react-icons/bs";
 
 const FoodDonationCard = lazy(() =>
   import("../../components/FoodCard/FoodCard")
@@ -15,6 +17,29 @@ const FoodDonationCard = lazy(() =>
 const Home = () => {
   const { donorData, getDonorDetails, loading } = useContext(DontationContext);
 
+  const howItWorks = [
+    {
+      id: 1,
+      title: "Combat Food Waste",
+      description:
+        "NourishNet bridges the gap between food donors and NGOs, enabling restaurants, hotels, and households to share surplus food safely and efficiently. Our smart matching system ensures that every meal reaches those who need it most—reducing waste and feeding communities.",
+      icon: BiLeaf,
+    },
+    {
+      id: 2,
+      title: "Empower Communities",
+      description:
+        "We bridge the gap between generosity and need. NGOs can view, claim, and coordinate food pickups from verified donors in real time, ensuring fair distribution and transparent tracking of every donation made through the platform.",
+      icon: FaHandsHelping,
+    },
+    {
+      id: 3,
+      title: "Promote Sustainability",
+      description:
+        "Every act of sharing contributes to reducing food waste, hunger, and environmental impact. NourishNet promotes a culture of sustainability where every meal saved helps build a more equitable and greener planet.",
+      icon: BsGlobe2,
+    },
+  ];
   useEffect(() => {
     if (!donorData) {
       getDonorDetails();
@@ -28,17 +53,16 @@ const Home = () => {
   return (
     <div>
       {/* Hero Section */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 flex justify-center flex-row pt-24 md:pt-28 max-[1000px]:flex-col max-lg:items-center">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 flex justify-center flex-row pt-24 md:pt-28 md:pb-12 max-[1000px]:flex-col max-lg:items-center">
         <div className="flex-1 flex justify-center flex-col max-lg:items-center px-4 lg:px-8">
-          <h1 className="max-lg:text-xl lg:text-3xl font-medium lg:pt-9 text-center lg:text-left">
-            Nourish Communities, Not Landfills.
+          <h1 className="max-lg:text-xl text-green-700 lg:text-3xl font-semibold lg:pt-9 text-center lg:text-left">
+            Feed Hope, Fight Waste.
           </h1>
 
           <p className="pt-4 lg:text-lg text-sm text-center lg:text-left text-gray-700">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur
-            nemo sit illo inventore nobis est similique magni voluptate
-            distinctio deleniti facilis id quasi nihil quis, sequi cupiditate.
-            Provident, commodi minus.
+            Welcome to NourishNet! Join our mission to rescue surplus food,
+            nourish communities, and make a real difference. Every meal donated
+            brings hope and reduces waste.
           </p>
 
           <div className="py-4 lg:py-7 flex flex-wrap justify-center lg:justify-start gap-4">
@@ -59,42 +83,37 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="flex-1 flex justify-center px-4 lg:px-8">
+        <div className="flex-1 flex justify-center px-4 lg:px-8 rounded-md">
           <img
             src={homeImage}
-            alt="NourishNet Home"
-            className="w-full max-w-md object-contain"
+            alt="Helping Hands - NourishNet"
+            className="w-full max-w-md object-contain rounded-md"
           />
         </div>
       </div>
 
       {/* How it Works Section */}
-      <div className="bg-neutral-100 py-12">
+      <div className=" py-12">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center">
           <h2 className="max-lg:text-xl lg:text-3xl font-medium mb-10">
             How NourishNet Works
           </h2>
 
-          <div className="flex flex-wrap justify-center gap-6">
-            {[1, 2, 3].map((item, id) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {howItWorks.map((item, id) => (
               <div
                 key={id}
-                className="w-full sm:w-[45%] lg:w-[31%] bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300 flex flex-col h-full"
+                className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300 flex flex-col justify-between"
               >
                 <div className="flex items-center space-x-3">
                   <div className="bg-green-100 text-green-600 p-3 rounded-full text-2xl">
-                    <BiLeaf />
+                    <item.icon />
                   </div>
                   <h3 className="text-xl font-bold text-gray-800">
-                    Combat Waste
+                    {item.title}
                   </h3>
                 </div>
-                <p className="text-gray-600 text-sm mt-2">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Nulla, mollitia. Lorem ipsum dolor sit, amet consectetur
-                  adipisicing elit. Doloribus, dolorum. Lorem ipsum dolor sit
-                  amet.
-                </p>
+                <p className="text-gray-600 text-sm mt-2">{item.description}</p>
               </div>
             ))}
           </div>
@@ -102,9 +121,9 @@ const Home = () => {
       </div>
 
       {/* Active Food Donations */}
-      <div className="pt-12">
+      <div className="pt-6">
         <div className="max-w-7xl mx-auto px-6 lg:px-16">
-          <h2 className="text-center max-lg:text-xl lg:text-3xl font-medium leading-normal">
+          <h2 className="text- max-lg:text-xl lg:text-2xl text-gray-800 font-medium leading-normal">
             Active Food Donations
           </h2>
 
@@ -117,9 +136,9 @@ const Home = () => {
       </div>
 
       {/* Recent Donations */}
-      <div className="">
+      <div className="py-2 md:py-4">
         <div className="max-w-7xl mx-auto px-6 lg:px-16">
-          <h2 className="text-center max-lg:text-xl lg:text-3xl font-medium leading-normal">
+          <h2 className=" max-lg:text-xl lg:text-2xl text-gray-800 font-semibold leading-normal">
             Recent Food Donations
           </h2>
 

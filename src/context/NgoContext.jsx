@@ -11,9 +11,12 @@ export const NgoProvider = ({ children }) => {
 
   const getNgoDetails = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/ngo/details", {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        "https://nourishnet-backend.vercel.app/ngo/details",
+        {
+          withCredentials: true,
+        }
+      );
 
       const data = await response.data;
       setNgoDetails(data);
@@ -24,9 +27,12 @@ export const NgoProvider = ({ children }) => {
 
   const handleCheckRole = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/user_role", {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        "https://nourishnet-backend.vercel.app/user_role",
+        {
+          withCredentials: true,
+        }
+      );
       const { role, user } = res.data;
       setCheckRole(role);
       setCurrentUser(user);
@@ -38,7 +44,7 @@ export const NgoProvider = ({ children }) => {
   const getAllClaimedReqeusts = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:3000/ngo/claimed-requests",
+        "https://nourishnet-backend.vercel.app/ngo/claimed-requests",
         {
           withCredentials: true,
         }

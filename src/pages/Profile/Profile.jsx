@@ -45,7 +45,7 @@ const Profile = () => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/upload-profile",
+        "https://nourishnet-backend.vercel.app/upload-profile",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

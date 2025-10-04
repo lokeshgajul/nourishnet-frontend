@@ -27,19 +27,17 @@ const Home = () => {
       }}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12 ">
-        <div className=" flex flex-row py-12 pt-24 md:pt-28 max-[1000px]:flex-col max-lg:items-center">
-          <div className="flex-1 flex justify-center flex-col max-lg:items-center px-4 lg:px-8">
+        <div className="flex flex-row py-12 pt-24 md:pt-28 max-[1000px]:flex-col max-lg:items-center">
+          <div className="flex-1 flex flex-col justify-center max-lg:items-center px-4 lg:px-8">
             <h1 className="max-lg:text-xl lg:text-3xl text-gray-700 font-medium lg:pt-9 text-center lg:text-left">
               <span className="text-green-600">Welcome, </span>
-              {ngoDetails?.ngoName}
+              {ngoDetails?.ngoName || "NourishNet"}
             </h1>
 
             <p className="pt-4 lg:text-lg text-sm text-center lg:text-left text-gray-700">
-              {ngoDetails?.bio}
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis
-              accusamus sunt nesciunt cum ducimus blanditiis, exercitationem
-              distinctio earum magni iusto ratione magnam, aliquid neque dicta
-              velit a quasi reiciendis necessitatibus?
+              At NourishNet, we connect surplus food with those in need,
+              reducing food waste while feeding communities across our cities.
+              Your support makes a real difference every day.
             </p>
           </div>
 
@@ -47,7 +45,7 @@ const Home = () => {
             <img
               src={HomeImg}
               alt="NourishNet Home"
-              className="w-full max-w-md rounded-md object-contain"
+              className="w-full max-w-md rounded-md object-contain shadow-lg"
             />
           </div>
         </div>

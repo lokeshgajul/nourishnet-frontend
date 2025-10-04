@@ -17,9 +17,12 @@ const RequestFood = () => {
 
   const getNgoDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/ngo/details/`, {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `https://nourishnet-backend.vercel.app/ngo/details/`,
+        {
+          withCredentials: true,
+        }
+      );
 
       const data = response.data;
       console.log("details ", data);
@@ -63,11 +66,12 @@ const RequestFood = () => {
         teamSize: teamSize,
         donationId: donationDetails._id,
         donorName: donationDetails.donorName,
+        donorPhone: donationDetails.donorPhone,
         donorAddress: donationDetails.donorAddress,
         donationStatus: "Claimed",
       };
       const response = await axios.post(
-        `http://localhost:3000/ngo/claim/`,
+        `https://nourishnet-backend.vercel.app/ngo/claim/`,
         payload,
         {
           withCredentials: true,

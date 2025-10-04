@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [cookies, removeCookie] = useCookies([]);
   const [user, setUser] = useState(null);
+  const [error, setError] = useState();
 
   const Register = async (
     role,
@@ -47,7 +48,7 @@ export const AuthProvider = ({ children }) => {
 
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:3000/register_user",
+        "https://nourishnet-backend.vercel.app/register_user",
         payload
       );
       const data = response.data;
@@ -55,6 +56,11 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     } catch (error) {
       console.log("API error:", error);
+      const message =
+        error.response?.data?.message ||
+        "Something went wrong. Please try again.";
+      setError(message);
+      setLoading(false);
     }
   };
 
@@ -63,7 +69,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:3000/login_user",
+        "https://nourishnet-backend.vercel.app/login_user",
         {
           email,
           password,
@@ -78,6 +84,11 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("status", JSON.stringify(true));
     } catch (error) {
       console.log("API error:", error);
+      const message =
+        error.response?.data?.message ||
+        "Something went wrong. Please try again.";
+      setError(message);
+      setLoading(false);
     }
   };
 
@@ -85,7 +96,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:3000/verify-token",
+        "https://nourishnet-backend.vercel.app/verify-token",
         {},
         { withCredentials: true }
       );
@@ -114,7 +125,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:3000/logout",
+        "https://nourishnet-backend.vercel.app/logout",
         {},
         { withCredentials: true }
       );
@@ -139,6 +150,9 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated,
     logout,
     checkRole,
+    error,
+    setError,
+    setLoading,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -32,9 +32,6 @@ const Login = () => {
               Food Donation & Distribution Platform
             </p>
           </div>
-          <p className="text-green-500 text-sm">
-            Enter your credentials to continue
-          </p>
         </div>
 
         <form className="space-y-4" onSubmit={handleLogin}>
@@ -42,6 +39,7 @@ const Login = () => {
             <input
               type="email"
               value={email}
+              required
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email Address"
               className="w-full px-6 py-3 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300"
@@ -55,6 +53,7 @@ const Login = () => {
             <input
               type="password"
               value={password}
+              required
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               className="w-full px-6 py-3 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300"

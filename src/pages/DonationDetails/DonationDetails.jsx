@@ -35,9 +35,12 @@ function DonationDetails() {
 
   const handleCheckRole = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/user_role", {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        "https://nourishnet-backend.vercel.app/user_role",
+        {
+          withCredentials: true,
+        }
+      );
       const { role, user } = res.data;
       setCheckRole(role);
       setCurrentUser(user);
@@ -49,7 +52,7 @@ function DonationDetails() {
   const handleDelete = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/donation/delete",
+        "https://nourishnet-backend.vercel.app/donation/delete",
         { id: decodedId }
       );
 
@@ -73,59 +76,63 @@ function DonationDetails() {
 
   return (
     <>
-      <div className="flex justify-center flex-row pt-24 md:pt-28 max-[1000px]:flex-col max-lg:items-center bg-neutral-100">
-        <div className="col-span-3">
-          <div className="flex md:justify-center max-lg:items-center flex-col px-7 pt-3 lg:px-14 lg:w-[600px]">
-            <h1 className="max-lg:text-xl lg:text-3xl font-medium lg:pt-9">
-              Donation Details
-            </h1>
+      <section className="max-w-7xl mx-auto px-6 lg:px-12 flex justify-center flex-row pt-24 md:pt-28 md:pb-12 max-[1000px]:flex-col max-lg:items-center">
+        <div className="flex-1 flex justify-center flex-col max-lg:items-center px-4 lg:px-8">
+          <h1 className="text-2xl lg:text-4xl font-semibold text-gray-800">
+            Donation Details
+          </h1>
+          <p className="mt-4 text-gray-600 text-sm lg:text-base leading-relaxed">
+            Review detailed information about this donation to ensure
+            transparency and efficient distribution to those in need.
+          </p>
 
-            <p className="pt-4 lg:text-lg text-sm">
-              Review comprehensive information for each donation, ensuring
-              transparency and efficient resource allocation to those in need.
-            </p>
-
-            <div className="py-4 lg:py-7 space-x-8">
-              <Link to="/">
-                <button
-                  className="bg-green-600 px-5 py-3 text-sm font-medium text-white rounded-full cursor-pointer"
-                  type="button"
-                >
-                  Back To Donation
-                </button>
-              </Link>
+          <div className="flex flex-wrap justify-center lg:justify-start gap-4 mt-6">
+            <Link to="/">
               <button
-                className=" border-slate-200 px-5 py-3 max-sm:mt-3 text-sm font-medium border text-black rounded-full cursor-pointer"
                 type="button"
+                className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 text-sm font-medium rounded-full transition-all"
               >
-                Volunteer Today
+                Back To Donations
               </button>
-            </div>
+            </Link>
+            <button
+              type="button"
+              className="border border-gray-300 px-6 py-3 text-sm font-medium text-gray-700 rounded-full hover:bg-gray-100 transition-all"
+            >
+              Volunteer Today
+            </button>
           </div>
         </div>
-        <div className="col-span-3">
-          <div className="px-6 lg:px-14">
-            <img src={image} alt="image" />
-          </div>
+
+        {/* Image Section */}
+        <div className="w-full lg:w-[480px]">
+          <img
+            src={image}
+            alt="Donation Illustration"
+            className="rounded-xl object-contain w-full h-auto"
+          />
         </div>
+      </section>
+
+      <div className="px-6 md:px-10 mt-16 mb-6">
+        <h2 className="text-center text-2xl font-semibold text-gray-900">
+          Donation Overview & Details
+        </h2>
       </div>
 
-      <div className="flex justify-center items-center pt-8 pb-4">
-        <span className="text-center font-semibold text-gray-700 text-xl">
-          Donation Overview & Details{" "}
-        </span>
-      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-9 gap-6 px-6 md:px-10 pb-16">
+        <div className="lg:col-span-1"></div>
 
-      <div class="grid grid-cols-1 px-4 gap-6 md:grid-cols-1 md:px-8 lg:grid-cols-9 lg:px-10 lg:py-4">
-        <div class="lg:col-span-1"></div>
+        <div className="lg:col-span-4 bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-lg transition-all p-6">
+          <h3 className="text-xl font-semibold mb-4 text-gray-800">
+            Donation Summary
+          </h3>
 
-        <div class="rounded-xl border border-gray-300 p-6 shadow-lg lg:col-span-4">
-          <h2 class="mb-4 text-xl font-bold">Donation Summary</h2>
-          <div class="flex flex-col gap-6">
-            <div class="grid grid-cols-2 gap-4">
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 gap-6">
               <div>
-                <p class="text-sm text-gray-500">Request Raised</p>
-                <p class="font-medium">
+                <p className="text-sm text-gray-500">Request Raised</p>
+                <p className="font-medium text-gray-800">
                   {donationDetails?.createdAt
                     ? new Date(donationDetails.createdAt).toLocaleString(
                         undefined,
@@ -141,9 +148,9 @@ function DonationDetails() {
                 </p>
               </div>
               <div>
-                <p class="text-sm text-gray-500">Donation Status</p>
+                <p className="text-sm text-gray-500">Donation Status</p>
                 <p
-                  class={`font-medium ${
+                  className={`font-medium ${
                     donationDetails?.donationStatus === "Claimed"
                       ? "text-green-600"
                       : donationDetails?.donationStatus === "Pending"
@@ -156,89 +163,113 @@ function DonationDetails() {
               </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-6">
               <div>
-                <p class="text-sm text-gray-500">Food Category</p>
-                <p class="font-medium">{donationDetails?.foodCategory}</p>
+                <p className="text-sm text-gray-500">Food Category</p>
+                <p className="font-medium text-gray-800">
+                  {donationDetails?.foodCategory || "Not Specified"}
+                </p>
               </div>
               <div>
-                <p class="text-sm text-gray-500">Total Items</p>
-                <p class="font-medium">{donationDetails?.foodQuantity}</p>
+                <p className="text-sm text-gray-500">Total Items</p>
+                <p className="font-medium text-gray-800">
+                  {donationDetails?.foodQuantity || "N/A"}
+                </p>
               </div>
             </div>
 
-            <hr class="border-t border-gray-300" />
+            <div>
+              <p className="text-sm text-gray-500">Food Description</p>
+              <p className="font-medium text-gray-800 mt-1 leading-relaxed">
+                {donationDetails?.foodDescription ||
+                  "No description provided for this donation."}
+              </p>
+            </div>
+
+            <hr className="border-gray-300" />
 
             <div>
-              <p class="text-sm text-gray-500">Visual Reference</p>
-              <div class="mt-2 w-full overflow-hidden rounded-md">
+              <p className="text-sm text-gray-500 mb-2">Visual Reference</p>
+              <div className="w-full overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
                 <img
-                  class="h-96 w-full object-conatin"
                   src={donationDetails?.foodImage || foodImage}
                   alt="Food donation"
+                  className="w-full h-72 object-cover hover:scale-105 transition-transform duration-300"
                 />
               </div>
             </div>
           </div>
         </div>
 
-        <div class="flex flex-col gap-6 lg:col-span-3">
-          <div class="rounded-xl border border-gray-300 p-6 shadow-lg">
-            <h2 class="mb-4 text-xl font-bold">Donor Information</h2>
-            <div class="flex flex-col gap-4">
+        {/* Donor Info & Actions */}
+        <div className="lg:col-span-3 flex flex-col gap-6">
+          <div className="bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-lg transition-all p-6">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">
+              Donor Information
+            </h3>
+            <div className="space-y-3">
               <div>
-                <p class="text-sm text-gray-500">Name</p>
-                <p class="font-medium">{donationDetails?.donorName}</p>
+                <p className="text-sm text-gray-500">Name</p>
+                <p className="font-medium text-gray-800">
+                  {donationDetails?.donorName || "Not Available"}
+                </p>
               </div>
               <div>
-                <p class="text-sm text-gray-500">Donor Type</p>
-                <p class="font-medium">Individual Donor</p>
+                <p className="text-sm text-gray-500">Donor Type</p>
+                <p className="font-medium text-gray-800">Individual Donor</p>
               </div>
               <div>
-                <p class="text-sm text-gray-500">Address</p>
-                <p class="font-medium">{donationDetails?.donorAddress}</p>
+                <p className="text-sm text-gray-500">Address</p>
+                <p className="font-medium text-gray-800">
+                  {donationDetails?.donorAddress || "Not Mentioned"}
+                </p>
               </div>
             </div>
           </div>
 
-          <div class="rounded-xl border border-gray-300 p-6 shadow-lg">
-            <h2 class="mb-4 text-xl font-bold">Actions</h2>
-            <div class="flex flex-col gap-4">
+          <div className="bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-lg transition-all p-6">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">
+              Actions
+            </h3>
+
+            <div className="space-y-4">
               <div>
-                <p class="text-sm text-gray-500">Contact Donor</p>
-                <p class="font-medium">lokeshg@gmail.com</p>
-                <p class="font-medium">+91 {donationDetails?.donorPhone}</p>
+                <p className="text-sm text-gray-500">Contact Donor</p>
+                <p className="font-medium text-gray-800">lokeshg@gmail.com</p>
+                <p className="font-medium text-gray-800">
+                  +91 {donationDetails?.donorPhone || "N/A"}
+                </p>
               </div>
 
-              {checkRole == "Donor" ? (
-                donationDetails?.donorId == currentUser?.id ? (
+              {checkRole === "Donor" ? (
+                donationDetails?.donorId === currentUser?.id && (
                   <div>
-                    <p class="text-sm mt-2 text-gray-500">Accept Donation</p>
+                    <p className="text-sm text-gray-500 mt-2">
+                      Manage Donation
+                    </p>
                     <button
                       onClick={handleDelete}
-                      class="mt-2 w-full rounded-md bg-red-500 px-4 py-2 font-semibold text-white transition-colors cursor-pointer hover:bg-red-600"
+                      className="mt-2 w-full rounded-md bg-red-500 px-4 py-2 font-semibold text-white hover:bg-red-600 transition-all"
                     >
                       Delete Donation
                     </button>
                   </div>
-                ) : (
-                  <></>
                 )
               ) : (
                 <div>
-                  <p class="text-sm mt-2 text-gray-500">Accept Donation</p>
-                  <button class="mt-2 w-full rounded-md bg-green-500 px-4 py-2 font-semibold text-white transition-colors hover:bg-green-600">
-                    <Link to={`/claim-food/${btoa(decodedId)}`}>
+                  <p className="text-sm text-gray-500 mt-2">Accept Donation</p>
+                  <Link to={`/claim-food/${btoa(decodedId)}`}>
+                    <button className="mt-2 w-full rounded-md bg-green-600 px-4 py-2 font-semibold text-white hover:bg-green-700 transition-all">
                       Confirm Pickup
-                    </Link>
-                  </button>
+                    </button>
+                  </Link>
                 </div>
               )}
             </div>
           </div>
         </div>
 
-        <div class="lg:col-span-1"></div>
+        <div className="lg:col-span-1"></div>
       </div>
     </>
   );

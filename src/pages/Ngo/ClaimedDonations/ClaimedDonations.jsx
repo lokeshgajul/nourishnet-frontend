@@ -8,7 +8,7 @@ const ClaimedDonations = () => {
   const getAllClaimedReqeusts = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:3000/ngo/claimed-requests",
+        "http://localhost:https://nourishnet-backend.vercel.app/ngo/claimed-requests",
         {
           withCredentials: true,
         }
@@ -24,7 +24,7 @@ const ClaimedDonations = () => {
   }, []);
   return (
     <div className="w-full grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-6 max-[200px]:px-2">
-      {data?.map((item, id) => (
+      {data?.slice(0, 4).map((item, id) => (
         <div
           key={id}
           className="w-full px-6 gap-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all p-6"
@@ -52,7 +52,7 @@ const ClaimedDonations = () => {
             </span>
             <span className="text-sm text-gray-600">
               <span className="font-semibold text-gray-800">Contact:</span>{" "}
-              {item.donorContactNo}
+              {item.donorPhone}
             </span>
             <span>
               <span className="font-semibold text-gray-800">Pickup Time:</span>{" "}
@@ -62,11 +62,7 @@ const ClaimedDonations = () => {
               <span className="font-semibold text-gray-800">
                 Pickup Location:
               </span>{" "}
-              {item.pickupLocation || "Not provided"}
-            </span>
-            <span>
-              <span className="font-semibold text-gray-800">Quantity:</span>{" "}
-              {item.quantity || "N/A"}
+              {item.donorAddress || "Not provided"}
             </span>
           </div>
         </div>

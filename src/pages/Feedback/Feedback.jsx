@@ -12,7 +12,7 @@ const Feedback = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/feedback",
+        "http://localhost:https://nourishnet-backend.vercel.app/feedback",
         { feedback },
         {
           withCredentials: true,

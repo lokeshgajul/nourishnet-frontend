@@ -4,16 +4,17 @@ import React from "react";
 import Header from "./Header";
 import NavbarSkeleton from "./Navbar";
 import Card from "./Card";
+import Carousel from "./Carousel";
 const HeroSection = () => {
   return (
     <div>
       <div>
         <NavbarSkeleton />
       </div>
-      <div className="px-6 md:px-16 lg:px-24 py-12 mt-16 space-y-16">
+      <div className="px-6 md:px-16 lg:px-24 py-12 space-y-16">
         {/* Hero Section */}
         <div>
-          <Header />
+          <Carousel />
         </div>
 
         {/* Section with cards */}

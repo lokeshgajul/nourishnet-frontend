@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import Select from "react-dropdown-select";
 
 function Register() {
   const [fullName, setFullName] = useState("");
@@ -9,18 +10,66 @@ function Register() {
   const [address, setAddress] = useState("");
   const [bio, setBio] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState();
+  const [formError, setFormError] = useState("");
 
   const navigate = useNavigate();
-  const { Register, setRole, role } = useContext(AuthContext);
+  const { Register, error, setLoading } = useContext(AuthContext);
   const isDonor = role === "Donor";
+
+  const options = [
+    { id: "Donor", name: "Donor" },
+    { id: "Ngo", name: "NGO" },
+  ];
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setFormError("");
+
+    const showTimedError = (message) => {
+      setFormError(message);
+      setTimeout(() => {
+        setFormError("");
+      }, 3000);
+    };
+
+    let missingFields = [];
+
+    if (!role) {
+      showTimedError("Please select a role to continue.");
+      return;
+    }
+
+    if (!fullName.trim())
+      missingFields.push(isDonor ? "Full Name" : "Organization Name");
+    if (!email.trim()) missingFields.push("Email");
+    if (!phone.trim()) missingFields.push("Phone Number");
+    if (!address.trim()) missingFields.push("Address");
+    if (!password.trim()) missingFields.push("Password");
+
+    if (!isDonor && !bio.trim()) {
+      missingFields.push("Bio");
+    }
+
+    if (missingFields.length > 0) {
+      showTimedError("Please fill in all required fields.");
+      return;
+    }
+
+    setLoading(true);
     try {
       await Register(role, fullName, email, phone, address, password, bio);
       navigate("/login");
     } catch (error) {
-      console.log(error);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong!";
+
+      showTimedError(message);
+      console.log("Register API error:", error);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -36,22 +85,29 @@ function Register() {
           <p className="text-green-500 text-sm">Register as a Donor or NGO</p>
         </div>
 
+        {
+          <div className="mb-4 text-red-600 text-sm font-medium">
+            {formError}
+          </div>
+        }
         <form className="space-y-4" onSubmit={handleRegister}>
           <div>
             <label className="block mb-1 text-sm font-semibold text-gray-700">
               Select Role
             </label>
-            <select
-              value={role}
-              onChange={(e) => {
-                setRole(e.target.value);
-                console.log(e.target.value);
+            <Select
+              className="mt-2 text-sm"
+              options={options}
+              labelField="name"
+              valueField="id"
+              values={options.filter((option) => option.id === role)}
+              onChange={(value) => {
+                if (value && value.length > 0) {
+                  setRole(value[0].id);
+                  console.log(value[0].id);
+                }
               }}
-              className="w-full px-6 py-3 border border-green-300 rounded-xl bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
-            >
-              <option value="Donor">Food Donor</option>
-              <option value="Ngo">NGO</option>
-            </select>
+            />
           </div>
 
           {isDonor ? (
