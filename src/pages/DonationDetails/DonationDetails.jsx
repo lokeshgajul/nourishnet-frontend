@@ -105,7 +105,7 @@ function DonationDetails() {
         </div>
 
         {/* Image Section */}
-        <div className="w-full lg:w-[480px]">
+        <div className="w-full lg:w-[480px] max-md:mt-8">
           <img
             src={image}
             alt="Donation Illustration"
@@ -114,7 +114,7 @@ function DonationDetails() {
         </div>
       </section>
 
-      <div className="px-6 md:px-10 mt-16 mb-6">
+      <div className="px-6 md:px-10 mt-12 mb-6">
         <h2 className="text-center text-2xl font-semibold text-gray-900">
           Donation Overview & Details
         </h2>

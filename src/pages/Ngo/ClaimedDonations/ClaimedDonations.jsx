@@ -8,7 +8,7 @@ const ClaimedDonations = () => {
   const getAllClaimedReqeusts = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:https://nourishnet-backend.vercel.app/ngo/claimed-requests",
+        "https://nourishnet-backend.vercel.app/ngo/claimed-requests",
         {
           withCredentials: true,
         }

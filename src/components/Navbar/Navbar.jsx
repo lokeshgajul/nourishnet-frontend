@@ -1,6 +1,5 @@
-import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { MdMenu, MdClose } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
@@ -66,9 +65,9 @@ const Navbar = () => {
 
   return (
     <div className="fixed top-0 left-0 w-full z-50 shadow-md bg-white">
-      <div className="flex justify-between items-center py-3 md:py-4 px-4 border-gray-300">
-        <h2 className="font-bold md:text-[20px]  capitalize italic">
-          NourishNet
+      <div className="flex justify-between items-center py-5 md:py-4 px-4 border-gray-300">
+        <h2 className="font-bold md:text-[20px]  capitalize italic text-green-700">
+          <Link to="/">NourishNet</Link>
         </h2>
 
         <ul className="hidden md:flex gap-3">
@@ -120,7 +119,7 @@ const Navbar = () => {
             </li>
           ))}
           <div className="w-full flex justify-center">
-            <AuthButton />
+            <span onClick={handleProfile}>Profile</span>
           </div>
         </ul>
       </div>

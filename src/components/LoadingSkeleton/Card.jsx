@@ -14,7 +14,7 @@ const Card = () => {
           {[1, 2, 3].map((id) => (
             <div
               key={id}
-              className="p-4 bg-white rounded-xl shadow-md flex flex-col gap-4 w-full max-w-sm"
+              className="p-4 bg-white rounded-xl shadow-md flex flex-col gap-4 w-full"
             >
               {/* Image */}
               <Skeleton height={180} borderRadius={12} />

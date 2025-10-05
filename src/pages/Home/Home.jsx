@@ -15,7 +15,7 @@ const FoodDonationCard = lazy(() =>
   import("../../components/FoodCard/FoodCard")
 );
 const Home = () => {
-  const { donorData, getDonorDetails, loading } = useContext(DontationContext);
+  const { donorData, getDonorDetails } = useContext(DontationContext);
 
   const howItWorks = [
     {
@@ -45,10 +45,6 @@ const Home = () => {
       getDonorDetails();
     }
   }, [donorData, getDonorDetails]);
-
-  if (loading) {
-    return <p>Loading recent donations...</p>;
-  }
 
   return (
     <div>
@@ -93,7 +89,7 @@ const Home = () => {
       </div>
 
       {/* How it Works Section */}
-      <div className=" py-12">
+      <div className=" py-6">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center">
           <h2 className="max-lg:text-xl lg:text-3xl font-medium mb-10">
             How NourishNet Works

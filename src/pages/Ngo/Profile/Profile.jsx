@@ -46,15 +46,11 @@ const Profile = () => {
       );
 
       if (data.success) {
-        alert("Profile image updated successfully!");
         setPreview(data.profileImage);
         getNgoDetails();
-      } else {
-        alert("Upload failed: " + data.message);
       }
     } catch (err) {
       console.error("Upload error:", err);
-      alert("Upload failed due to network/server error");
     }
   };
 

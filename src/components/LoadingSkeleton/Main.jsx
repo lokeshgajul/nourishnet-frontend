@@ -39,7 +39,6 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Grid of 4 cards */}
         <div>
           <Card />
         </div>

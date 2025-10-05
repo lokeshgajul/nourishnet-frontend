@@ -48,22 +48,17 @@ const Profile = () => {
         "https://nourishnet-backend.vercel.app/upload-profile",
         formData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
           withCredentials: true,
         }
       );
 
       if (data.success) {
-        alert("Profile image updated successfully!");
         setPreview(data.profileImage);
         // Optionally refresh donorData
         getDonorDetails();
-      } else {
-        alert("Upload failed: " + data.message);
       }
     } catch (err) {
       console.error("Upload error:", err);
-      alert("Upload failed due to network/server error");
     }
   };
 

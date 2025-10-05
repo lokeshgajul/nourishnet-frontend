@@ -29,20 +29,17 @@ function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navbar */}
       <nav className="bg-white shadow-sm border-b sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Logo */}
             <div className="flex-shrink-0">
               <h1 className="text-2xl font-bold text-green-600">NourishNet</h1>
             </div>
 
-            {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-8">
                 <a
-                  href="#home"
+                  href="/"
                   className="text-gray-900 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors"
                 >
                   Home
@@ -53,18 +50,7 @@ function LandingPage() {
                 >
                   About Us
                 </Link>
-                <a
-                  href="#donate"
-                  className="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors"
-                >
-                  Donate Food
-                </a>
-                <a
-                  href="#claim"
-                  className="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors"
-                >
-                  Claim Food
-                </a>
+
                 <Link
                   to="feedback"
                   className="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors"
@@ -74,7 +60,6 @@ function LandingPage() {
               </div>
             </div>
 
-            {/* Desktop Auth buttons */}
             <div className="hidden md:flex items-center space-x-4">
               <Link to="/login">
                 <button
@@ -106,51 +91,43 @@ function LandingPage() {
             </div>
           </div>
 
-          {/* Mobile Navigation */}
           {isMenuOpen && (
-            <div className="md:hidden">
-              <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
+            <div
+              className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+                isMenuOpen
+                  ? "max-h-[500px] opacity-100 translate-y-0"
+                  : "max-h-0 opacity-0 -translate-y-2"
+              }`}
+            >
+              <div className="px-4 pt-3 pb-5 space-y-2 sm:px-5 bg-white border-t shadow-md rounded-b-lg">
                 <a
                   href="#home"
-                  className="text-gray-900 hover:text-green-600 block px-3 py-2 text-base font-medium"
+                  className="text-gray-900 hover:text-green-600 block px-3 py-2 text-base font-medium transition-colors"
                 >
                   Home
                 </a>
                 <a
                   href="#how-it-works"
-                  className="text-gray-700 hover:text-green-600 block px-3 py-2 text-base font-medium"
+                  className="text-gray-700 hover:text-green-600 block px-3 py-2 text-base font-medium transition-colors"
                 >
                   How It Works
                 </a>
                 <a
-                  href="#donate"
-                  className="text-gray-700 hover:text-green-600 block px-3 py-2 text-base font-medium"
-                >
-                  Donate Food
-                </a>
-                <a
-                  href="#claim"
-                  className="text-gray-700 hover:text-green-600 block px-3 py-2 text-base font-medium"
-                >
-                  Claim Food
-                </a>
-                <a
                   href="#contact"
-                  className="text-gray-700 hover:text-green-600 block px-3 py-2 text-base font-medium"
+                  className="text-gray-700 hover:text-green-600 block px-3 py-2 text-base font-medium transition-colors"
                 >
                   Contact
                 </a>
-                <div className="flex flex-col space-y-2 pt-4">
-                  <Link to="/login">
-                    <button
-                      variant="outline"
-                      className="text-green-600 border-green-600 hover:bg-green-50 bg-transparent p-1.5 cursor-pointer rounded-md"
-                    >
+
+                {/* Buttons Section */}
+                <div className="flex flex-col items-start space-y-3 pt-4 border-t border-gray-200 mt-2">
+                  <Link to="/login" className="w-full">
+                    <button className="w-full text-green-600 border border-green-600 hover:bg-green-50 bg-transparent py-2 rounded-md transition-all">
                       Login
                     </button>
                   </Link>
-                  <Link to="/register">
-                    <button className="bg-green-600 hover:bg-green-700">
+                  <Link to="/register" className="w-full">
+                    <button className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition-all">
                       Register
                     </button>
                   </Link>
@@ -178,19 +155,23 @@ function LandingPage() {
                 we can reduce food waste and fight hunger in our communities.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <button
-                  size="lg"
-                  className="bg-green-600 hover:bg-green-700 text-lg px-8 py-3"
-                >
-                  Donate Food
-                </button>
-                <button
-                  size="lg"
-                  variant="outline"
-                  className="text-green-600 border-green-600 hover:bg-green-50 text-lg px-8 py-3 bg-transparent"
-                >
-                  Claim Food
-                </button>
+                <Link to="/login">
+                  <button
+                    size="lg"
+                    className="bg-green-600 hover:bg-green-700 text-lg px-8 py-3"
+                  >
+                    Donate Food
+                  </button>
+                </Link>
+                <Link to="/login">
+                  <button
+                    size="lg"
+                    variant="outline"
+                    className="text-green-600 border-green-600 hover:bg-green-50 text-lg px-8 py-3 bg-transparent"
+                  >
+                    Claim Food
+                  </button>
+                </Link>
               </div>
             </div>
             <div className="flex justify-center">
@@ -482,12 +463,14 @@ function LandingPage() {
             in their communities. Every meal shared is a step towards ending
             hunger.
           </p>
-          <button
-            size="lg"
-            className="bg-white text-green-600 hover:bg-gray-100 text-lg px-8 py-3"
-          >
-            Get Started
-          </button>
+          <Link to="/login">
+            <button
+              size="lg"
+              className="bg-white text-green-600 hover:bg-gray-100 text-lg px-8 py-3"
+            >
+              Get Started
+            </button>
+          </Link>
         </div>
       </section>
 
