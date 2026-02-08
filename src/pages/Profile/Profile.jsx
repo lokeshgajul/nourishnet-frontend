@@ -45,11 +45,11 @@ const Profile = () => {
 
     try {
       const { data } = await axios.post(
-        "https://nourishnet-backend.vercel.app/upload-profile",
+        "http://localhost:3000/upload-profile",
         formData,
         {
           withCredentials: true,
-        }
+        },
       );
 
       if (data.success) {

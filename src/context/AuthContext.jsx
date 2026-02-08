@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     phone,
     address,
     password,
-    bio
+    bio,
   ) => {
     try {
       let payload = { role };
@@ -48,8 +48,8 @@ export const AuthProvider = ({ children }) => {
 
       setLoading(true);
       const response = await axios.post(
-        "https://nourishnet-backend.vercel.app/register_user",
-        payload
+        "http://localhost:3000/register_user",
+        payload,
       );
       const data = response.data;
       setUser(data);
@@ -69,12 +69,12 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://nourishnet-backend.vercel.app/login_user",
+        "http://localhost:3000/login_user",
         {
           email,
           password,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       const { user } = response.data;
       setUser(user);
@@ -96,9 +96,9 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://nourishnet-backend.vercel.app/verify-token",
+        "http://localhost:3000/verify-token",
         {},
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       const { valid, user } = await response.data;
@@ -114,7 +114,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error(
         "Token verification failed:",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
       setIsAuthenticated(false);
     } finally {
@@ -125,9 +125,9 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       const res = await axios.post(
-        "https://nourishnet-backend.vercel.app/logout",
+        "http://localhost:3000/logout",
         {},
-        { withCredentials: true }
+        { withCredentials: true },
       );
       localStorage.removeItem("status");
       const { status } = await res.data;

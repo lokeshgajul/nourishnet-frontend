@@ -35,12 +35,9 @@ function DonationDetails() {
 
   const handleCheckRole = async () => {
     try {
-      const res = await axios.get(
-        "https://nourishnet-backend.vercel.app/user_role",
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axios.get("http://localhost:3000/user_role", {
+        withCredentials: true,
+      });
       const { role, user } = res.data;
       setCheckRole(role);
       setCurrentUser(user);
@@ -52,8 +49,8 @@ function DonationDetails() {
   const handleDelete = async () => {
     try {
       const response = await axios.post(
-        "https://nourishnet-backend.vercel.app/donation/delete",
-        { id: decodedId }
+        "http://localhost:3000/donation/delete",
+        { id: decodedId },
       );
 
       const data = response.data;
@@ -77,7 +74,7 @@ function DonationDetails() {
   return (
     <>
       <section className="max-w-7xl mx-auto px-6 lg:px-12 flex justify-center flex-row pt-24 md:pt-28 md:pb-12 max-[1000px]:flex-col max-lg:items-center">
-        <div className="flex-1 flex justify-center flex-col max-lg:items-center px-4 lg:px-8">
+        <div className="flex-1 flex justify-center flex-col max-lg:items-center lg:px-8">
           <h1 className="text-2xl lg:text-4xl font-semibold text-gray-800">
             Donation Details
           </h1>
@@ -142,7 +139,7 @@ function DonationDetails() {
                           year: "numeric",
                           hour: "2-digit",
                           minute: "2-digit",
-                        }
+                        },
                       )
                     : "Not Mentioned"}
                 </p>
@@ -154,8 +151,8 @@ function DonationDetails() {
                     donationDetails?.donationStatus === "Claimed"
                       ? "text-green-600"
                       : donationDetails?.donationStatus === "Pending"
-                      ? "text-yellow-600"
-                      : "text-red-600"
+                        ? "text-yellow-600"
+                        : "text-red-600"
                   }`}
                 >
                   {donationDetails?.donationStatus || "Pending"}

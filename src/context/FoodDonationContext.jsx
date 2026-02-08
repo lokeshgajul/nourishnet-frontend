@@ -54,12 +54,9 @@ export const FoodDonationProvider = ({ children }) => {
       if (donorData) return donorData;
 
       setLoading(true);
-      const response = await axios.get(
-        "https://nourishnet-backend.vercel.app/donor/details",
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get("http://localhost:3000/donor/details", {
+        withCredentials: true,
+      });
 
       const data = await response.data;
       setdonorData(data);
@@ -72,7 +69,7 @@ export const FoodDonationProvider = ({ children }) => {
   const getUserDonations = async () => {
     try {
       const response = await axios.get(
-        `https://nourishnet-backend.vercel.app/donor/donations/${donorData._id}`
+        `http://localhost:3000/donor/donations/${donorData._id}`,
       );
 
       const data = response.data;
@@ -85,9 +82,7 @@ export const FoodDonationProvider = ({ children }) => {
 
   const getDonationsDetails = async (id) => {
     try {
-      const response = await axios.get(
-        `https://nourishnet-backend.vercel.app/donation/${id}`
-      );
+      const response = await axios.get(`http://localhost:3000/donation/${id}`);
 
       const data = response.data;
       setDonationDetails(data);

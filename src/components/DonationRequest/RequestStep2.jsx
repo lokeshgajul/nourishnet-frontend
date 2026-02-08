@@ -26,11 +26,11 @@ const RequestStep2 = () => {
 
     try {
       const response = await axios.post(
-        "https://nourishnet-backend.vercel.app/donor/donations",
+        "http://localhost:3000/donor/donations",
         formData,
         {
           headers: "multipart/form-data",
-        }
+        },
       );
       const data = await response.json();
       console.log(data);

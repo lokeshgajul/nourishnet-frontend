@@ -12,12 +12,9 @@ const ActiveDonations = ({ donorData }) => {
 
   const getActiveDonations = async () => {
     try {
-      const res = await axios.get(
-        "https://nourishnet-backend.vercel.app/donations",
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axios.get("http://localhost:3000/donations", {
+        withCredentials: true,
+      });
       setDonations(res.data.donations);
     } catch (error) {
       console.error("Error fetching active donations", error);

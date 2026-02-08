@@ -12,14 +12,14 @@ const Feedback = () => {
 
     try {
       const response = await axios.post(
-        "https://nourishnet-backend.vercel.app/feedback",
+        "http://localhost:3000/feedback",
         { feedback },
         {
           withCredentials: true,
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       const data = await response.data;

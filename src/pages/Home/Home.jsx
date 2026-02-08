@@ -10,9 +10,10 @@ import RecentDonations from "../RecentDonations/RecentDonations";
 import CardSkeleton from "../../components/LoadingSkeleton/Card";
 import { FaHandsHelping } from "react-icons/fa";
 import { BsGlobe2 } from "react-icons/bs";
+import Chatbot from "../../components/Chatbot/Chatbot";
 
-const FoodDonationCard = lazy(() =>
-  import("../../components/FoodCard/FoodCard")
+const FoodDonationCard = lazy(
+  () => import("../../components/FoodCard/FoodCard"),
 );
 const Home = () => {
   const { donorData, getDonorDetails } = useContext(DontationContext);
@@ -71,7 +72,7 @@ const Home = () => {
               </button>
             </Link>
             <button
-              className="border border-slate-200 px-5 py-3 text-sm font-medium text-black rounded-full cursor-pointer"
+              className="border border-slate-200 px-5 py-3 bg-white text-sm font-medium text-black rounded-full cursor-pointer"
               type="button"
             >
               Volunteer Today
@@ -123,6 +124,9 @@ const Home = () => {
             Active Food Donations
           </h2>
 
+          <div>
+            <Chatbot />
+          </div>
           <div className="py-6">
             <Suspense fallback={<CardSkeleton />}>
               <ActiveDonations donorData={donorData} />

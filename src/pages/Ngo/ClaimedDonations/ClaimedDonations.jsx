@@ -8,10 +8,10 @@ const ClaimedDonations = () => {
   const getAllClaimedReqeusts = async () => {
     try {
       const res = await axios.get(
-        "https://nourishnet-backend.vercel.app/ngo/claimed-requests",
+        "http://localhost:3000/ngo/claimed-requests",
         {
           withCredentials: true,
-        }
+        },
       );
       setData(res.data.allclaims);
     } catch (error) {
