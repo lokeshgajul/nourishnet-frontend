@@ -1,17 +1,21 @@
-// src/App.jsx
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./Login";
-import Register from "./Register";
-
+import React from "react";
+import { AuthProvider } from "./context/AuthContext";
+import { CookiesProvider } from "react-cookie";
+import Main from "./navigation/Main";
+import { FoodDonationProvider } from "./context/FoodDonationContext";
+import { NgoProvider } from "./context/NgoContext";
+import "./App.css";
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </Router>
+    <CookiesProvider>
+      <AuthProvider>
+        <FoodDonationProvider>
+          <NgoProvider>
+            <Main />
+          </NgoProvider>
+        </FoodDonationProvider>
+      </AuthProvider>
+    </CookiesProvider>
   );
 }
 

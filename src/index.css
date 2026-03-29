@@ -1,1 +1,92 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-primary: #10b981;
+  --color-primary-dark: #064e3b;
+  --color-accent: #f59e0b;
+  --color-background: #dcfce7; /* More saturated, visible mint-green */
+  --color-charcoal: #064e3b;
+  --color-slate-900: #022c22;
+  --font-inter: "Inter", sans-serif;
+  
+  --shadow-bento: 0 20px 25px -5px rgb(6 78 59 / 0.1), 0 8px 10px -6px rgb(6 78 59 / 0.1);
+  --shadow-impact: 0 25px 50px -12px rgba(16, 185, 129, 0.35);
+  --radius-bento: 32px;
+  
+  --bg-lush-gradient: linear-gradient(135deg, #dcfce7 0%, #f0fdf4 100%);
+  --bg-forest-gradient: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+}
+
+@layer base {
+  body {
+    @apply font-inter bg-background text-charcoal antialiased selection:bg-primary/20;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/80 backdrop-blur-xl border border-emerald-100;
+  }
+  
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out forwards;
+  }
+
+  /* Custom Animation Utilities */
+  .animate-in {
+    animation-duration: 500ms;
+    animation-fill-mode: both;
+  }
+
+  .fade-in {
+    animation-name: fade-in;
+  }
+
+  .zoom-in {
+    animation-name: zoom-in;
+  }
+
+  .slide-in-from-bottom-10 {
+    animation-name: slide-in-from-bottom-10;
+  }
+
+  .slide-in-from-right-10 {
+    animation-name: slide-in-from-right-10;
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes zoom-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes slide-in-from-bottom-10 {
+    from { transform: translateY(10%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  @keyframes slide-in-from-right-10 {
+    from { transform: translateX(10%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  .bg-vibrant-gradient {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  }
+}
