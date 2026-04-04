@@ -17,6 +17,7 @@ import {
   BiPhone,
   BiTrash,
   BiShield,
+  BiAlarm,
 } from "react-icons/bi";
 
 function DonationDetails() {
@@ -222,6 +223,44 @@ function DonationDetails() {
                   <p className="font-bold text-gray-800">
                     {donationDetails?.foodQuantity || "N/A"}
                   </p>
+                </div>
+
+                <div className="space-y-1 md:col-span-2 lg:col-span-3">
+                  <div className="flex items-center gap-2 text-emerald-600/50">
+                    <BiAlarm className="text-lg" />
+                    <p className="text-[10px] font-black uppercase tracking-widest">
+                      Listing Expires At
+                    </p>
+                  </div>
+                  {donationDetails?.expiresAt ? (
+                    <div className="flex items-center gap-3">
+                      <p className="font-bold text-gray-800">
+                        {new Date(donationDetails.expiresAt).toLocaleString(
+                          undefined,
+                          {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          },
+                        )}
+                      </p>
+                      {new Date(donationDetails.expiresAt) < new Date() ? (
+                        <span className="px-2 py-0.5 bg-red-100 text-red-600 text-[10px] font-black uppercase rounded-full tracking-widest">
+                          Expired
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-black uppercase rounded-full tracking-widest">
+                          Active
+                        </span>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="font-bold text-gray-400 text-sm">
+                      No expiry set
+                    </p>
+                  )}
                 </div>
               </div>
 

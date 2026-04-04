@@ -170,6 +170,25 @@ const DonationRequest = ({ onNext }) => {
         />
       </div>
 
+      {/* Expiry Date */}
+      <div className="flex flex-col group">
+        <label htmlFor="expiresAt" className={labelClasses}>
+          Expiry Date &amp; Time <span className="normal-case tracking-normal font-medium text-emerald-600/50">(optional)</span>
+        </label>
+        <input
+          type="datetime-local"
+          name="expiresAt"
+          id="expiresAt"
+          value={foodDonationForm.expiresAt}
+          min={new Date().toISOString().slice(0, 16)}
+          onChange={(e) => handleFoodDonation("expiresAt", e.target.value)}
+          className={inputClasses}
+        />
+        <p className="text-[10px] text-emerald-700/50 font-bold mt-2 ml-4">
+          The listing will be auto-deleted by the system once this time is reached.
+        </p>
+      </div>
+
       {/* Navigation */}
       <div className="pt-6">
         <button

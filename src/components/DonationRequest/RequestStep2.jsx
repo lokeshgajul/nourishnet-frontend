@@ -30,7 +30,12 @@ const RequestStep2 = ({ onBack }) => {
     formData.append("donorPhone", donorData.phone);
     formData.append("donorAddress", donorData.address);
     formData.append("donationStatus", "Pending");
-    formData.append("expiresAt", foodDonationForm.expiresAt);
+    if (foodDonationForm.expiresAt) {
+      formData.append(
+        "expiresAt",
+        new Date(foodDonationForm.expiresAt).toISOString(),
+      );
+    }
 
     try {
       await axios.post(
