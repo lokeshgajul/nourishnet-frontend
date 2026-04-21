@@ -17,6 +17,7 @@ import NgoProfile from "../pages/Ngo/Profile/Profile";
 import AboutUs from "../pages/About/About";
 import Feedback from "../pages/Feedback/Feedback";
 import NgoVerificationPending from "../pages/Verification/VerificationPending";
+import SuspendedAccount from "../components/SuspendAccount/SuspendAccount";
 
 const Main = () => {
   const { isAuthenticated, verfiyCookie, checkRole, appLoading } =
@@ -66,6 +67,7 @@ const Main = () => {
                       path="/verification"
                       element={<NgoVerificationPending />}
                     />
+                    <Route path="/suspend" element={<SuspendedAccount />} />
                   </>
                 )}
               </Routes>

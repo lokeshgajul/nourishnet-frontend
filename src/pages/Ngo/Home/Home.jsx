@@ -7,6 +7,7 @@ import ActiveDonations from "../../ActiveDoantions/ActiveDonations";
 import ClaimedDonations from "../ClaimedDonations/ClaimedDonations";
 import { NgoContext } from "../../../context/NgoContext";
 import { BiHeart, BiHistory, BiRocket } from "react-icons/bi";
+import axios from "axios";
 
 const Home = () => {
   const { donorData } = useContext(DontationContext);
@@ -60,7 +61,9 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-16">
           <div className="flex items-end justify-between mb-12">
             <div>
-              <p className="text-primary font-black uppercase text-xs tracking-widest mb-2">Live Availability</p>
+              <p className="text-primary font-black uppercase text-xs tracking-widest mb-2">
+                Live Availability
+              </p>
               <h2 className="text-3xl lg:text-5xl font-black text-emerald-900 tracking-tight flex items-center gap-3">
                 <BiHeart className="text-primary" /> Active Feed Signals
               </h2>
@@ -68,7 +71,13 @@ const Home = () => {
           </div>
 
           <div className="py-6">
-            <Suspense fallback={<div className="h-96 flex items-center justify-center font-black text-emerald-900/20 uppercase tracking-widest">Scanning Network...</div>}>
+            <Suspense
+              fallback={
+                <div className="h-96 flex items-center justify-center font-black text-emerald-900/20 uppercase tracking-widest">
+                  Scanning Network...
+                </div>
+              }
+            >
               <ActiveDonations donorData={donorData} />
             </Suspense>
           </div>
@@ -86,7 +95,13 @@ const Home = () => {
           </div>
 
           <div className="py-6">
-            <Suspense fallback={<div className="h-48 flex items-center justify-center font-black text-emerald-900/20 uppercase tracking-widest">Retrieving Ledger...</div>}>
+            <Suspense
+              fallback={
+                <div className="h-48 flex items-center justify-center font-black text-emerald-900/20 uppercase tracking-widest">
+                  Retrieving Ledger...
+                </div>
+              }
+            >
               <ClaimedDonations />
             </Suspense>
           </div>

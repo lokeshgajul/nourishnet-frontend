@@ -77,7 +77,7 @@ export const FoodDonationProvider = ({ children }) => {
       );
 
       const data = response.data;
-      console.log(data);
+      // console.log(data);
       setUserDonations(data.donor_donations);
     } catch (error) {
       console.log(error);
@@ -93,6 +93,26 @@ export const FoodDonationProvider = ({ children }) => {
       const data = response.data;
       setDonationDetails(data);
       return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getDonorStatus = async () => {
+    try {
+      const res = await axios.get(
+        "https://nourishnet-backend-tau.vercel.app/donor-status",
+        {
+          withCredentials: true,
+        },
+      );
+
+      const donorStatus = res.data;
+      if (donorStatus === "SUSPEND") {
+        // removeCookie("token");
+        // navigate("/suspend");
+      }
+      // console.log(donorStatus);
     } catch (error) {
       console.log(error);
     }
@@ -114,6 +134,7 @@ export const FoodDonationProvider = ({ children }) => {
     getUserDonations,
     donationDetails,
     setDonationDetails,
+    getDonorStatus,
   };
 
   return (
