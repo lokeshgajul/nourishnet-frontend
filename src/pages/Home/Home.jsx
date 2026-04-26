@@ -3,7 +3,6 @@ import homeImage from "../../assets/images/donation2.jpg";
 import { ToastContainer } from "react-toastify";
 import { BiLeaf } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import { DontationContext } from "../../context/FoodDonationContext";
 import { Suspense, lazy } from "react";
 import ActiveDonations from "../ActiveDoantions/ActiveDonations";
@@ -14,6 +13,7 @@ import { BsGlobe2 } from "react-icons/bs";
 import Chatbot from "../../components/Chatbot/Chatbot";
 import RulesAndPolicy from "../../components/RulesAndPolicy/Policies";
 import { useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const FoodDonationCard = lazy(
   () => import("../../components/FoodCard/FoodCard"),
@@ -21,11 +21,21 @@ const FoodDonationCard = lazy(
 const Home = () => {
   const { donorData, getDonorDetails, getDonorStatus } =
     useContext(DontationContext);
+  const { setIsAuthenticated } = useContext(AuthContext);
+
   const [showPolicy, setShowPolicy] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    getDonorStatus();
-  }, []);
+    const handleDonorStatus = async () => {
+      const status = await getDonorStatus();
+      if (status === "SUSPENDED") {
+        setIsAuthenticated(false);
+        navigate("/suspend");
+      }
+    };
+    handleDonorStatus();
+  }, []); // run once on mount
 
   useEffect(() => {
     const accepted = localStorage.getItem("policyAccepted");

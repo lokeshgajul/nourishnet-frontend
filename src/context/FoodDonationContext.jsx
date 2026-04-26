@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { createContext, useCallback, useState } from "react";
+import { useEffect } from "react";
 
 export const DontationContext = createContext();
 
@@ -107,16 +108,18 @@ export const FoodDonationProvider = ({ children }) => {
         },
       );
 
-      const donorStatus = res.data;
-      if (donorStatus === "SUSPEND") {
-        // removeCookie("token");
-        // navigate("/suspend");
-      }
-      // console.log(donorStatus);
+      console.log(res.data.status);
+
+      return res.data.status;
     } catch (error) {
+      if (error.response?.status === 403) return "SUSPENDED";
       console.log(error);
     }
   };
+
+  // useEffect(() => {
+  //   getDonorStatus();
+  // }, []);
 
   const value = {
     handleIncrement,

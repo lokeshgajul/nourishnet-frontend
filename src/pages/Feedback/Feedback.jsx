@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { NgoContext } from "../../context/NgoContext";
 
 const Feedback = () => {
-  const [role, setRole] = useState("Donor");
   const [feedback, setFeedback] = useState("");
   const navigate = useNavigate();
 
