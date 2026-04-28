@@ -1,13 +1,40 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { BiLayer, BiChevronRight, BiUser, BiLeaf, BiTimeFive } from "react-icons/bi";
+import {
+  BiLayer,
+  BiChevronRight,
+  BiUser,
+  BiLeaf,
+  BiTimeFive,
+} from "react-icons/bi";
+import axios from "axios";
 
-const CountdownTimer = ({ expiresAt }) => {
+const CountdownTimer = ({ expiresAt, donationId }) => {
   const [timeLeft, setTimeLeft] = useState("");
   const [isExpired, setIsExpired] = useState(false);
 
   useEffect(() => {
     if (!expiresAt) return;
+
+    const markExpired = async () => {
+      try {
+        await axios.post(
+          "https://nourishnet-backend-tau.vercel.app/donation/expire",
+          { id: donationId },
+        );
+      } catch (err) {
+        console.error("Failed to mark expired:", err);
+      }
+    };
+
+    const alreadyExpired =
+      new Date(expiresAt).getTime() - new Date().getTime() < 0;
+    if (alreadyExpired) {
+      setIsExpired(true);
+      setTimeLeft("Expired");
+      markExpired();
+      return;
+    }
 
     const interval = setInterval(() => {
       const now = new Date().getTime();
@@ -18,8 +45,11 @@ const CountdownTimer = ({ expiresAt }) => {
         setIsExpired(true);
         setTimeLeft("Expired");
         clearInterval(interval);
+        markExpired();
       } else {
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        );
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
         setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
@@ -27,12 +57,14 @@ const CountdownTimer = ({ expiresAt }) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [expiresAt]);
+  }, [expiresAt, donationId]);
 
   if (!expiresAt) return null;
 
   return (
-    <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest backdrop-blur-md ${isExpired ? 'bg-red-900/80 text-red-50 border border-red-500/30' : 'bg-amber-900/80 text-amber-50 border border-amber-500/30'}`}>
+    <div
+      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest backdrop-blur-md ${isExpired ? "bg-red-900/80 text-red-50 border border-red-500/30" : "bg-amber-900/80 text-amber-50 border border-amber-500/30"}`}
+    >
       <BiTimeFive className="text-sm" />
       {isExpired ? "Expired" : `${timeLeft}`}
     </div>
@@ -41,14 +73,16 @@ const CountdownTimer = ({ expiresAt }) => {
 
 const FoodDonationCard = ({ donations = [] }) => {
   const filterDonations = donations.filter(
-    (item) => item.donationStatus === "Pending"
+    (item) => item.donationStatus === "Pending",
   );
 
   if (!filterDonations.length) {
     return (
       <div className="w-full py-20 text-center bg-emerald-50/50 rounded-[40px] border-2 border-dashed border-emerald-100">
         <BiLeaf className="text-4xl text-emerald-200 mx-auto mb-4" />
-        <p className="text-emerald-900/40 font-black uppercase tracking-widest text-xs">No active nodes detected in this sector</p>
+        <p className="text-emerald-900/40 font-black uppercase tracking-widest text-xs">
+          No active nodes detected in this sector
+        </p>
       </div>
     );
   }
@@ -63,7 +97,10 @@ const FoodDonationCard = ({ donations = [] }) => {
           {/* Image Container with Overlay */}
           <div className="relative w-full h-56 bg-emerald-50 overflow-hidden">
             <div className="absolute top-4 right-4 z-20">
-              <CountdownTimer expiresAt={item.expiresAt} />
+              <CountdownTimer
+                expiresAt={item.expiresAt}
+                donationId={item._id}
+              />
             </div>
             <div className="absolute top-4 left-4 z-10">
               <span className="bg-emerald-900/80 backdrop-blur-md text-emerald-50 text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 border border-white/10">
@@ -93,8 +130,12 @@ const FoodDonationCard = ({ donations = [] }) => {
                   <BiUser size={16} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-emerald-900/30 uppercase tracking-widest leading-none mb-1">Origin Node</p>
-                  <p className="text-sm font-bold text-emerald-900 truncate max-w-[150px]">{item.donorName}</p>
+                  <p className="text-[10px] font-black text-emerald-900/30 uppercase tracking-widest leading-none mb-1">
+                    Origin Node
+                  </p>
+                  <p className="text-sm font-bold text-emerald-900 truncate max-w-[150px]">
+                    {item.donorName}
+                  </p>
                 </div>
               </div>
             </div>
@@ -102,7 +143,8 @@ const FoodDonationCard = ({ donations = [] }) => {
             {/* Action Bar */}
             <Link to={`/donation/${btoa(item._id)}`} className="block">
               <button className="w-full bg-emerald-50 text-emerald-900 font-black py-4 rounded-2xl flex items-center justify-center gap-2 group-hover:bg-primary group-hover:text-white transition-all duration-300 uppercase tracking-widest text-[11px]">
-                Access Details <BiChevronRight className="text-lg group-hover:translate-x-1 transition-transform" />
+                Access Details{" "}
+                <BiChevronRight className="text-lg group-hover:translate-x-1 transition-transform" />
               </button>
             </Link>
           </div>

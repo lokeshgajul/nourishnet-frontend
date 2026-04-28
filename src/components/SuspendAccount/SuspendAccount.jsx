@@ -68,7 +68,7 @@ const SuspendedAccount = () => {
                     Phone Support
                   </p>
                   <p className="text-gray-700 text-sm font-semibold">
-                    +91 9876543210
+                    +91 9321531486
                   </p>
                 </div>
               </div>
@@ -77,7 +77,7 @@ const SuspendedAccount = () => {
             {/* Action */}
             <button
               onClick={() => navigate("/")}
-              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-red-500 to-rose-500 text-white font-black py-4 rounded-2xl hover:opacity-90 active:scale-[0.98] transition-all shadow-lg shadow-red-200 uppercase tracking-widest text-sm"
+              className="w-full flex items-center justify-center gap-2 bg-linear-to-r from-red-500 to-rose-500 text-white font-black py-4 rounded-2xl hover:opacity-90 active:scale-[0.98] transition-all shadow-lg shadow-red-200 uppercase tracking-widest text-sm"
             >
               <MdArrowBack className="text-lg" />
               Back to Home

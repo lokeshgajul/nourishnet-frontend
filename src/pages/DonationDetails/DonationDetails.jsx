@@ -37,7 +37,24 @@ function DonationDetails() {
     try {
       const data = await getDonationsDetails(decodedId);
       if (data) {
-        setDonationDetails(data);
+        const isExpired =
+          data.expiresAt &&
+          new Date(data.expiresAt) < new Date() &&
+          data.donationStatus === "Pending";
+
+        if (isExpired) {
+          try {
+            await axios.post(
+              "https://nourishnet-backend-tau.vercel.app/donation/expire",
+              { id: decodedId },
+            );
+          } catch (err) {
+            console.error("Failed to mark expired:", err);
+          }
+          setDonationDetails({ ...data, donationStatus: "Expired" });
+        } else {
+          setDonationDetails(data);
+        }
       }
     } catch (error) {
       console.log(error);
